@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "572668610452",
+    "project_id": "qrcatchermacc",
+    "storage_bucket": "qrcatchermacc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:572668610452:android:a31b39f77ede0e7eea3181",
+        "android_client_info": {
+          "package_name": "com.example.qrcatchermacc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "572668610452-ntmpjpo5q3k5no5bjfgofce0hfqj494l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.qrcatchermacc",
+            "certificate_hash": "8287ec3aec9a2dcc9e3af905cb90ebb5703524be"
+          }
+        },
+        {
+          "client_id": "572668610452-5ftedgucpiu6gib7gldqkveg9j84a5cm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAz2shaaqM38_wxgzF1RulQFC7aQHxDpgI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "572668610452-5ftedgucpiu6gib7gldqkveg9j84a5cm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

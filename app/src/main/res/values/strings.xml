@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">QRcatcherMACC</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Games</string>
+    <string name="title_notifications">Profile</string>
+
+    <string name="title_activity_catch">Catch</string>
+    <string name="chat">chat</string>
+    <string name="map">map</string>
+    <string name="compass">compass</string>
+    <string name="your_web_client_id">572668610452-5ftedgucpiu6gib7gldqkveg9j84a5cm.apps.googleusercontent.com</string>
+    <string name="profile">Profile</string>
+    <string name="games">Games</string>
+</resources>
