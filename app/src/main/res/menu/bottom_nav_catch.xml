@@ -2,16 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/compassFragment"
-        android:icon="@drawable/ic_home_black_24dp"
+        android:icon="@drawable/ic_baseline_directions_24"
         android:title="@string/compass" />
 
     <item
         android:id="@+id/mapFragment"
-        android:icon="@drawable/ic_dashboard_black_24dp"
+        android:icon="@drawable/ic_baseline_map_24"
         android:title="@string/map" />
 
     <item
         android:id="@+id/chatFragment"
-        android:icon="@drawable/ic_notifications_black_24dp"
+        android:icon="@drawable/ic_baseline_chat_24"
         android:title="@string/chat" />
 </menu>

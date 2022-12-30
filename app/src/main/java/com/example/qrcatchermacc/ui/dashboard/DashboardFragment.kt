@@ -8,16 +8,22 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.qrcatchermacc.Catch
 import com.example.qrcatchermacc.databinding.FragmentDashboardBinding
 
 class DashboardFragment : Fragment() {
 
     private var _binding: FragmentDashboardBinding? = null
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+
+    private var layoutManager: RecyclerView.LayoutManager?= null
+    private var adapter: RecyclerView.Adapter<RecyclerAdapter.ViewHolder>?= null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,12 +40,16 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-
+        /**
         binding.startGame.setOnClickListener {
             val intent = Intent(requireActivity(), Catch::class.java)
             startActivity(intent)
         }
-        
+        */
+        layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.layoutManager = layoutManager
+        adapter = RecyclerAdapter()
+        binding.recyclerView.adapter = adapter
         return root
     }
 

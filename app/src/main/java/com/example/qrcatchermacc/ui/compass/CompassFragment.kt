@@ -88,11 +88,14 @@ class CompassFragment : Fragment(), SensorEventListener{
         mSensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager /**AppCompatActivity.SENSOR_SERVICE*/
         compassImg = binding.imageViewCompass
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
         start()
-        getLocation()
+
         if (!checkPermissions()){
             requestPermissions()
         }
+        getLocation()
+
         return root
     }
 
