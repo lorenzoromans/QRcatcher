@@ -9,6 +9,7 @@
     <string name="map">map</string>
     <string name="compass">compass</string>
     <string name="your_web_client_id">572668610452-5ftedgucpiu6gib7gldqkveg9j84a5cm.apps.googleusercontent.com</string>
+    <string name="Maps_API_key">AIzaSyCjX0vD_F7wbaUN-0Xib2o2Yh4P0j6YOgM</string>
     <string name="profile">Profile</string>
     <string name="games">Games</string>
     <string name="logout">logout</string>

@@ -34,6 +34,8 @@ class LoginScreen : AppCompatActivity() {
         mGoogleSignInClient= GoogleSignIn.getClient(this,gso)
 
         firebaseAuth= FirebaseAuth.getInstance()
+        mGoogleSignInClient.signOut()
+
         findViewById<CardView>(R.id.Signin).setOnClickListener{ view: View? ->
             Toast.makeText(this,"Logging In", Toast.LENGTH_SHORT).show()
             signInGoogle()

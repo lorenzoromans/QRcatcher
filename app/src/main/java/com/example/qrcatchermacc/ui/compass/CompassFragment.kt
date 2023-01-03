@@ -32,6 +32,7 @@ import androidx.core.content.ContentProviderCompat.requireContext
 import com.example.qrcatchermacc.databinding.FragmentCompassBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import kotlinx.coroutines.NonCancellable.start
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.cos
@@ -89,10 +90,16 @@ class CompassFragment : Fragment(), SensorEventListener{
         compassImg = binding.imageViewCompass
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
 
+        //Initialize the listeners
         start()
-
+        //check if the permissions have been granted by the user and if the GPS has been activated
         if (!checkPermissions()){
             requestPermissions()
+        }
+        if(!isLocationEnabled()){
+            Toast.makeText(requireActivity(), "Please turn on location", Toast.LENGTH_LONG).show()
+            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+            startActivity(intent)
         }
         getLocation()
 
@@ -172,9 +179,11 @@ class CompassFragment : Fragment(), SensorEventListener{
                     }
                 }
             } else {
+                /**
                 Toast.makeText(requireActivity(), "Please turn on location", Toast.LENGTH_LONG).show()
                 val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                 startActivity(intent)
+                */
             }
 
     }
@@ -291,15 +300,16 @@ class CompassFragment : Fragment(), SensorEventListener{
         }
     }
 */
+
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
         val sensorList = mSensorManager?.getSensorList(Sensor.TYPE_ALL)
-            if (sensorList != null) {
-                for (sensor in sensorList) {
-                    mSensorManager?.unregisterListener(this, sensor)
-                }
+        if (sensorList != null) {
+            for (sensor in sensorList) {
+                mSensorManager?.unregisterListener(this, sensor)
             }
+        }
     }
 
 
