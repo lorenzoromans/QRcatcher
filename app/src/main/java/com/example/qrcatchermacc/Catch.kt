@@ -1,6 +1,7 @@
 package com.example.qrcatchermacc
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -14,6 +15,7 @@ import com.example.qrcatchermacc.databinding.ActivityCatchBinding
 class Catch : AppCompatActivity() {
 
     private lateinit var binding: ActivityCatchBinding
+    var gameId : String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +37,7 @@ class Catch : AppCompatActivity() {
         navView.setupWithNavController(navController)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
+        gameId = intent.getStringExtra("GameId")
+        Log.d("inside catch id",gameId!!)
     }
 }

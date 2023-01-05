@@ -11,6 +11,6 @@ data class Game(
     val longitude: Double? = null,
     val flag: String? = null
 
-){
+)/**{
     constructor(): this ("","","","",0.0,0.0,"")
-}
+}*/

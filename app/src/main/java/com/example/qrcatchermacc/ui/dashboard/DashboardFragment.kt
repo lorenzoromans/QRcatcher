@@ -95,21 +95,23 @@ class DashboardFragment : Fragment() {
         // Add a new value to the "games" node
         var gamesRef = database.getReference("games")
 
-        gamesRef.addValueEventListener(object : ValueEventListener {
+        gamesRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
                     Log.d("aaaaaaaa","CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                     val games = dataSnapshot.children.map { it.getValue(Game::class.java) }
                     for (game in games) {
                         // Do something with the game's attributes here
+                        /**
                         val id = game?.id
                         val name= game?.name
                         val description = game?.description
                         val qrImage = game?.imageUrl
                         Log.d("aaaaaaaaaa",id+name+description+qrImage+"+++++++++++++++++++++++++++++++++++++++++++++")
-                        ids.add(id)
-                        names.add(name)
-                        descriptions.add(description)
-                        qrImages.add(qrImage)
+                        */
+                        ids.add(game?.id)
+                        names.add(game?.name)
+                        descriptions.add(game?.description)
+                        qrImages.add(game?.imageUrl)
                     }
                     // Pass the arrays to the RecyclerView adapter
                     adapter = RecyclerAdapter(ids, names, descriptions, qrImages)

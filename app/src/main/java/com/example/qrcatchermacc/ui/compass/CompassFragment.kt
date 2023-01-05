@@ -29,9 +29,15 @@ import android.widget.Toast
 import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.qrcatchermacc.Catch
+import com.example.qrcatchermacc.Game
 import com.example.qrcatchermacc.databinding.FragmentCompassBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.NonCancellable.start
 import java.util.*
 import kotlin.math.atan2
@@ -63,8 +69,8 @@ class CompassFragment : Fragment(), SensorEventListener{
 
     private var currentDegree = 0f
 
-    private var targetLatitude: Double = 41.914192
-    private var targetLongitude: Double = 12.530910
+    var targetLatitude: Double = 41.914192
+    var targetLongitude: Double = 12.530910
     var latitude: Double = 0.0
     var longitude: Double = 0.0
     //-------------------------------
@@ -75,6 +81,37 @@ class CompassFragment : Fragment(), SensorEventListener{
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+
+        val database = FirebaseDatabase.getInstance()
+        val gamesRef = database.getReference("games")
+        val gameId = requireActivity().getIntent()!!.getExtras()!!.getString("GameId")
+    
+        val gameRef = gamesRef.child(gameId!!)
+        gameRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val game = dataSnapshot.getValue(Game::class.java)
+                if (game != null) {
+                    targetLatitude = game.latitude!!
+                    targetLongitude = game.longitude!!
+                    Log.d("valoriiii",game.latitude!!.toString()+game.longitude!!.toString())
+                    Log.d("valoriiiiiiiiiiiii",targetLatitude.toString()+ targetLongitude.toString())
+                    // Do something with the latitude and longitude
+                } else {
+                    // The game document was not found
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // An error occurred
+            }
+        })
+
+
+
+
+
+
+
         val compassViewModel =
             ViewModelProvider(this).get(CompassViewModel::class.java)
 

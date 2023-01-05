@@ -198,6 +198,8 @@ class RecyclerAdapter(
                 val position: Int = adapterPosition
                 Toast.makeText(itemView.context, "you clicked ${names[position]}", Toast.LENGTH_LONG).show()
                 val intent = Intent(itemView.context, Catch::class.java)
+                Log.d("insiderecicler",ids[position]!!)
+                intent.putExtra("GameId",ids[position])
                 itemView.context.startActivity(intent)
             }
 
