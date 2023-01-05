@@ -71,6 +71,7 @@ class NotificationsFragment : Fragment() {
 
     
         val imageUrl = acct?.photoUrl.toString()
+        SavedPreference.setImage(requireContext(), imageUrl)
         Glide.with(this)
             .load(imageUrl)
             .into(binding.immagine)
