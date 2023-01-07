@@ -36,15 +36,16 @@
                 android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
-                android:src="@drawable/ic_baseline_person_pin_24" />
+                android:src="@drawable/qrcatcher_logo" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Google Login"
+                android:text= "QRcatcher"
                 android:textAlignment="center"
                 android:textSize="40sp" />
+            <!--android:text="Google Login" -->
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"

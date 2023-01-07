@@ -65,7 +65,8 @@ class LoginScreen : AppCompatActivity() {
                 UpdateUI(account)
             }
         } catch (e: ApiException){
-            Toast.makeText(this,e.toString(), Toast.LENGTH_SHORT).show()
+            // if the user clicks back on the login it just goes back to the login page without actions necessary
+           // Toast.makeText(this,e.toString(), Toast.LENGTH_SHORT).show()
         }
     }
 

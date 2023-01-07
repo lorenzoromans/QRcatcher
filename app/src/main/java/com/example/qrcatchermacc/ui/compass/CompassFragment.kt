@@ -1,5 +1,6 @@
 package com.example.qrcatchermacc.ui.compass
 
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
@@ -13,11 +14,10 @@ import android.location.Address
 import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.os.Looper
 import android.provider.Settings
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,25 +26,21 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
-import com.example.qrcatchermacc.Catch
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.example.qrcatchermacc.Game
+import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.FragmentCompassBinding
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import kotlinx.coroutines.NonCancellable.start
+import com.google.android.gms.location.*
+import com.google.firebase.database.*
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 
-class CompassFragment : Fragment(), SensorEventListener{
+
+class CompassFragment : Fragment(), SensorEventListener {
     private var _binding: FragmentCompassBinding? = null
     private val binding get() = _binding!!
 
@@ -73,9 +69,22 @@ class CompassFragment : Fragment(), SensorEventListener{
     var targetLongitude: Double = 12.530910
     var latitude: Double = 0.0
     var longitude: Double = 0.0
+    var previousLatitude: Double = 0.0
+    var previousLongitude: Double = 0.0
+
+
+    private lateinit var locationManager: LocationManager
+    private lateinit var locationListener: LocationListener
+
+
+    lateinit var username: String
+    lateinit var playerRef: DatabaseReference
+
     //-------------------------------
+    private var locationCallback: LocationCallback? = null
+    private var locationRequest: LocationRequest? = null
 
-
+    @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -85,7 +94,9 @@ class CompassFragment : Fragment(), SensorEventListener{
         val database = FirebaseDatabase.getInstance()
         val gamesRef = database.getReference("games")
         val gameId = requireActivity().getIntent()!!.getExtras()!!.getString("GameId")
-    
+
+        username = getUsername(requireContext())!!
+
         val gameRef = gamesRef.child(gameId!!)
         gameRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -93,8 +104,11 @@ class CompassFragment : Fragment(), SensorEventListener{
                 if (game != null) {
                     targetLatitude = game.latitude!!
                     targetLongitude = game.longitude!!
-                    Log.d("valoriiii",game.latitude!!.toString()+game.longitude!!.toString())
-                    Log.d("valoriiiiiiiiiiiii",targetLatitude.toString()+ targetLongitude.toString())
+                    Log.d("valoriiii", game.latitude!!.toString() + game.longitude!!.toString())
+                    Log.d(
+                        "valoriiiiiiiiiiiii",
+                        targetLatitude.toString() + targetLongitude.toString()
+                    )
                     // Do something with the latitude and longitude
                 } else {
                     // The game document was not found
@@ -107,9 +121,7 @@ class CompassFragment : Fragment(), SensorEventListener{
         })
 
 
-
-
-
+        playerRef = gameRef.child("players").child(username)
 
 
         val compassViewModel =
@@ -123,31 +135,86 @@ class CompassFragment : Fragment(), SensorEventListener{
             textView.text = it
         }
 
-        mSensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager /**AppCompatActivity.SENSOR_SERVICE*/
-        compassImg = binding.imageViewCompass
+        mSensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
+
+        locationRequest = LocationRequest.create()
+        locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
+
+        locationRequest!!.setInterval(2 * 1000) // 10 seconds
+        locationRequest!!.setFastestInterval(1 * 1000) // 5 seconds
+
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(p0: LocationResult) {
+                // Update the latitude and longitude when the location changes
+                Log.d(
+                    "Callback",
+                    "SONO NEL CALLBACK------------------------------------------------------------------------------------"
+                )
+                val location: Location? = p0?.lastLocation
+                if (location != null) {
+                    latitude = location.latitude
+                    longitude = location.longitude
+
+                    Log.d("Callback LATTTTTTTTTTT", latitude.toString())
+                    Log.d("Callback LONGGGGGGGGGG", longitude.toString())
+
+                    //update the location
+                    val update = mapOf("latitude" to latitude, "longitude" to longitude)
+                    playerRef.updateChildren(update)
+
+                    //set previous lat and long
+                    previousLatitude = latitude
+                    previousLongitude = longitude
+
+                    binding.textLatitude.text = latitude.toString()
+                    binding.textLongitude.text = longitude.toString()
+
+                    //mFusedLocationClient.removeLocationUpdates(this)
+                }
+            }
+        }
+
 
         //Initialize the listeners
         start()
         //check if the permissions have been granted by the user and if the GPS has been activated
-        if (!checkPermissions()){
+        if (!checkPermissions()) {
             requestPermissions()
         }
-        if(!isLocationEnabled()){
+        if (!isLocationEnabled()) {
             Toast.makeText(requireActivity(), "Please turn on location", Toast.LENGTH_LONG).show()
             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
             startActivity(intent)
         }
-        getLocation()
+
 
         return root
     }
 
+    @SuppressLint("MissingPermission")
+    override fun onStart() {
+        super.onStart()
+        mFusedLocationClient.requestLocationUpdates(
+            locationRequest!!,
+            locationCallback!!,
+            Looper.myLooper()!!
+        )
+
+    }
 
     override fun onSensorChanged(event: SensorEvent) {
+
+
         if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
             SensorManager.getRotationMatrixFromVector(rMat, event.values)
-            mAzimuth = (Math.toDegrees(SensorManager.getOrientation(rMat,orientation)[0].toDouble()) + 360).toInt() % 360
+            mAzimuth = (Math.toDegrees(
+                SensorManager.getOrientation(
+                    rMat,
+                    orientation
+                )[0].toDouble()
+            ) + 360).toInt() % 360
         }
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.size)
@@ -159,12 +226,21 @@ class CompassFragment : Fragment(), SensorEventListener{
         if (mLastAccelerometerSet && mLastMagnetometerSet) {
             SensorManager.getRotationMatrix(rMat, null, mLastAccelerometer, mLastMagnetometer)
             SensorManager.getOrientation(rMat, orientation)
-            mAzimuth = (Math.toDegrees(SensorManager.getOrientation(rMat,orientation)[0].toDouble()) + 360).toInt() % 360
+            mAzimuth = (Math.toDegrees(
+                SensorManager.getOrientation(
+                    rMat,
+                    orientation
+                )[0].toDouble()
+            ) + 360).toInt() % 360
         }
         mAzimuth = Math.round(mAzimuth.toFloat())
 
-        getLocation()
-        val angle = -mAzimuth.toFloat() + getBearing(latitude, longitude, targetLatitude, targetLongitude).toFloat()
+        val angle = -mAzimuth.toFloat() + getBearing(
+            latitude,
+            longitude,
+            targetLatitude,
+            targetLongitude
+        ).toFloat()
         Log.d("AAAAAAAAAA", angle.toString())
         Log.d("DDDDDDDDDD", (-mAzimuth).toString())
         Log.d("BBBBBBBBBB", latitude.toString())
@@ -199,32 +275,6 @@ class CompassFragment : Fragment(), SensorEventListener{
         val x = cos(lat) * sin(latT) - sin(lat) * cos(latT) * cos(longDiff)
         return (Math.toDegrees(atan2(y, x)) + 360) % 360
     }
-
-
-    @SuppressLint("MissingPermission", "SetTextI18n")
-    private fun getLocation() {
-            if (isLocationEnabled()) {
-                mFusedLocationClient.lastLocation.addOnCompleteListener(requireActivity()) { task ->
-                    val location: Location? = task.result
-                    if (location != null) {
-                        val geocoder = Geocoder(requireActivity(), Locale.getDefault())
-                        val list: List<Address> =
-                            geocoder.getFromLocation(location.latitude, location.longitude, 1)
-                        //------------------------------------------------------
-                        latitude = list[0].latitude
-                        longitude = list[0].longitude
-                    }
-                }
-            } else {
-                /**
-                Toast.makeText(requireActivity(), "Please turn on location", Toast.LENGTH_LONG).show()
-                val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
-                startActivity(intent)
-                */
-            }
-
-    }
-
 
     private fun isLocationEnabled(): Boolean {
         val locationManager: LocationManager =
@@ -271,7 +321,7 @@ class CompassFragment : Fragment(), SensorEventListener{
     ) {
         if (requestCode == permissionId) {
             if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                getLocation()
+                //getLocation()
             }
         }
     }
@@ -283,7 +333,11 @@ class CompassFragment : Fragment(), SensorEventListener{
                     Sensor.TYPE_MAGNETIC_FIELD
                 ) == null
             ) {
-                Toast.makeText(requireContext(), "Your device doesn't support the Compass.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Your device doesn't support the Compass.",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 mAccelerometer = mSensorManager!!.getDefaultSensor(Sensor.TYPE_ACCELEROMETER)
                 mMagnetometer = mSensorManager!!.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD)
@@ -308,14 +362,7 @@ class CompassFragment : Fragment(), SensorEventListener{
 
     override fun onPause() {
         super.onPause()
-        /**
-        if (haveSensor) {
-            mSensorManager!!.unregisterListener(this, mRotationV)
-        } else {
-            mSensorManager!!.unregisterListener(this, mAccelerometer)
-            mSensorManager!!.unregisterListener(this, mMagnetometer)
-        }
-        */
+
 
     }
 
@@ -325,18 +372,6 @@ class CompassFragment : Fragment(), SensorEventListener{
         start()
     }
 
-/**
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-        val sensorList = mSensorManager?.getSensorList(Sensor.TYPE_ALL)
-        if (sensorList != null) {
-            for (sensor in sensorList) {
-                mSensorManager?.unregisterListener(this, sensor)
-            }
-        }
-    }
-*/
 
     override fun onDestroy() {
         super.onDestroy()
@@ -347,34 +382,13 @@ class CompassFragment : Fragment(), SensorEventListener{
                 mSensorManager?.unregisterListener(this, sensor)
             }
         }
+
+        //locationManager.removeUpdates(locationListener)
     }
 
 
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {   /** not implemented */   }
-
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
+        /** not implemented */
+    }
 }
 
-
-
-    /**
-    companion object {
-        fun newInstance() = CompassFragment()
-    }
-
-    private lateinit var viewModel: CompassViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_compass, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(CompassViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-
-}*/

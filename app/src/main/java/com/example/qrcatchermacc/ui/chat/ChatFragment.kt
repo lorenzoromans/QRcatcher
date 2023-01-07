@@ -6,28 +6,41 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.example.qrcatchermacc.R
+import android.widget.TextView
+import com.example.qrcatchermacc.databinding.FragmentChatBinding
+
 
 class ChatFragment : Fragment() {
-
+    /**
     companion object {
         fun newInstance() = ChatFragment()
     }
+    */
 
-    private lateinit var viewModel: ChatViewModel
+   // private lateinit var viewModel: ChatViewModel
+    private var _binding: FragmentChatBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_chat, container, false)
-        
+        val homeViewModel =
+            ViewModelProvider(this).get(ChatViewModel::class.java)
+
+        _binding = FragmentChatBinding.inflate(inflater, container, false)
+        val root: View = binding.root
+
+        val textView: TextView = binding.textChat
+        homeViewModel.text.observe(viewLifecycleOwner) {
+            textView.text = it
+        }
+        return root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ChatViewModel::class.java)
-        // TODO: Use the ViewModel
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
 }
