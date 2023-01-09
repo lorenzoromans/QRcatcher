@@ -17,6 +17,7 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import android.location.Location
+import androidx.appcompat.app.AppCompatActivity
 
 
 class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
@@ -81,7 +82,9 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
         return inflater.inflate(R.layout.fragment_map, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -93,4 +96,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     override fun onMapReady(p0: GoogleMap) {
         TODO("Not yet implemented")
     }
+
+
 }

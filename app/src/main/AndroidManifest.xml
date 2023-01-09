@@ -57,6 +57,28 @@
                 android:value="" />
             -->
         </activity>
+        <activity
+            android:name=".ui.chat.ChatFragment"
+            android:parentActivityName=".Catch">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Catch" />
+        </activity>
+        <activity
+            android:name=".ui.compass.CompassFragment"
+            android:parentActivityName=".Catch">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Catch" />
+        </activity>
+        <activity
+            android:name=".ui.map.MapFragment"
+            android:parentActivityName=".Catch">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".Catch" />
+        </activity>
+
     </application>
 
 </manifest>

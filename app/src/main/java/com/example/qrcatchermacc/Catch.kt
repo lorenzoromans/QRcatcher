@@ -62,8 +62,11 @@ class Catch : AppCompatActivity() {
         val player = Player(id = email , username = username, latitude = 0.0, longitude = 0.0, imageUrl = imageUrl)
         val update = mapOf(username to player)
         playersRef.updateChildren(update)
+    }
 
-
-
+    override fun onDestroy() {
+        super.onDestroy()
+        val myPlayerRef =  FirebaseDatabase.getInstance().getReference("games").child(gameId!!).child("players").child(getUsername(this)!!)
+        myPlayerRef.removeValue()
     }
 }

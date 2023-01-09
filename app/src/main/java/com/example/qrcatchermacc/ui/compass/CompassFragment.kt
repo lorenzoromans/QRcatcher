@@ -26,6 +26,7 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -90,6 +91,7 @@ class CompassFragment : Fragment(), SensorEventListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val database = FirebaseDatabase.getInstance()
         val gamesRef = database.getReference("games")
@@ -168,9 +170,11 @@ class CompassFragment : Fragment(), SensorEventListener {
                     previousLatitude = latitude
                     previousLongitude = longitude
 
-                    binding.textLatitude.text = latitude.toString()
-                    binding.textLongitude.text = longitude.toString()
-
+                    //if inserted in case of updates when the view has been already been destroyed
+                    if (binding.textLatitude != null || binding.textLongitude != null) {
+                        binding.textLatitude.text = latitude.toString()
+                        binding.textLongitude.text = longitude.toString()
+                    }
                     //mFusedLocationClient.removeLocationUpdates(this)
                 }
             }
@@ -205,7 +209,6 @@ class CompassFragment : Fragment(), SensorEventListener {
     }
 
     override fun onSensorChanged(event: SensorEvent) {
-
 
         if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
             SensorManager.getRotationMatrixFromVector(rMat, event.values)
@@ -261,7 +264,8 @@ class CompassFragment : Fragment(), SensorEventListener {
         ra.fillAfter = true
 
         // Start the animation
-        compassImg!!.startAnimation(ra)
+        binding.imageViewCompass.startAnimation(ra)
+        //compassImg!!.startAnimation(ra)
         //currentDegree = -mAzimuth.toFloat()
         currentDegree = angle
     }
@@ -384,6 +388,7 @@ class CompassFragment : Fragment(), SensorEventListener {
         }
 
         //locationManager.removeUpdates(locationListener)
+        mFusedLocationClient.removeLocationUpdates(locationCallback!!)
     }
 
 
