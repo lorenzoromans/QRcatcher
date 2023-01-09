@@ -170,11 +170,6 @@ class CompassFragment : Fragment(), SensorEventListener {
                     previousLatitude = latitude
                     previousLongitude = longitude
 
-                    //if inserted in case of updates when the view has been already been destroyed
-                    if (binding.textLatitude != null || binding.textLongitude != null) {
-                        binding.textLatitude.text = latitude.toString()
-                        binding.textLongitude.text = longitude.toString()
-                    }
                     //mFusedLocationClient.removeLocationUpdates(this)
                 }
             }
