@@ -77,7 +77,7 @@ class CompassFragment : Fragment(), SensorEventListener {
     private lateinit var locationManager: LocationManager
     private lateinit var locationListener: LocationListener
 
-
+    private var catchEnded: Boolean = false
     lateinit var username: String
     lateinit var playerRef: DatabaseReference
 
@@ -164,7 +164,10 @@ class CompassFragment : Fragment(), SensorEventListener {
 
                     //update the location
                     val update = mapOf("latitude" to latitude, "longitude" to longitude)
-                    playerRef.updateChildren(update)
+                    if (!catchEnded){
+                        playerRef.updateChildren(update)
+                    }
+
 
                     //set previous lat and long
                     previousLatitude = latitude
@@ -371,9 +374,14 @@ class CompassFragment : Fragment(), SensorEventListener {
         start()
     }
 
+    override fun onDestroyView(){
+        super.onDestroyView()
+
+    }
 
     override fun onDestroy() {
         super.onDestroy()
+        catchEnded=true
         _binding = null
         val sensorList = mSensorManager?.getSensorList(Sensor.TYPE_ALL)
         if (sensorList != null) {
