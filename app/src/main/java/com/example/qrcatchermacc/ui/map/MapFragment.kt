@@ -42,7 +42,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     private var players: List<Player?> = ArrayList()
     private var allMarkers: ArrayList<Marker> = ArrayList()
     private lateinit var job: Job
-    private var continua = true
     private lateinit var myLocation: LatLng
 
 
@@ -137,8 +136,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
     override fun onDestroyView() {
         super.onDestroyView()
-        //job.cancel()
-        continua = false
+        job.cancel()
     }
 
     override fun onStart() {
