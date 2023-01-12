@@ -1,24 +1,23 @@
 package com.example.qrcatchermacc
 
+
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
-import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.android.volley.toolbox.StringRequest
+import com.android.volley.toolbox.Volley
 import com.example.qrcatchermacc.SavedPreference.getEmail
 import com.example.qrcatchermacc.SavedPreference.getImage
 import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.ActivityCatchBinding
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.firestore.SetOptions
+import com.android.volley.Request
+
 
 class Catch : AppCompatActivity() {
 
@@ -68,5 +67,21 @@ class Catch : AppCompatActivity() {
         super.onDestroy()
         val myPlayerRef =  FirebaseDatabase.getInstance().getReference("games").child(gameId!!).child("players").child(getUsername(this)!!)
         myPlayerRef.removeValue()
+
+        var url="https://bbooss97.pythonanywhere.com/deletePlayers?id="+gameId!!
+        val queue = Volley.newRequestQueue(this)
+
+        val stringRequest = StringRequest(Request.Method.GET, url,
+            { response ->
+                // Do something with the response
+                Log.d("ZZZZZZZZZZZZZZZZZZZ",response.toString())
+            },
+            {error ->
+                // Handle error
+                Log.d("error",error.toString())
+            })
+
+        queue.add(stringRequest)
+
     }
 }
