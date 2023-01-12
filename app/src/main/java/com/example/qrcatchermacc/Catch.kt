@@ -11,6 +11,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -30,6 +31,10 @@ import com.android.volley.Request
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import java.sql.Ref
 
 
 class Catch : AppCompatActivity() {
@@ -38,6 +43,8 @@ class Catch : AppCompatActivity() {
     var gameId : String? = ""
     private val REQUEST_IMAGE_CAPTURE = 1
     private val CAMERA_PERMISSION_REQUEST_CODE = 1
+    private lateinit var database : FirebaseDatabase
+    private lateinit var flag: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,7 +75,7 @@ class Catch : AppCompatActivity() {
         val email = getEmail(this)!!
         val imageUrl = getImage(this)!!
 
-        val database = FirebaseDatabase.getInstance()
+        database = FirebaseDatabase.getInstance()
 
         val playersRef = database.getReference("games").child(gameId!!).child("players")
 
@@ -76,6 +83,20 @@ class Catch : AppCompatActivity() {
         val player = Player(id = email , username = username, latitude = 0.0, longitude = 0.0, imageUrl = imageUrl)
         val update = mapOf(username to player)
         playersRef.updateChildren(update)
+
+        var flagRef=database.getReference("games").child(gameId!!).child("flag")
+
+        flagRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                flag = dataSnapshot.getValue(String::class.java)!!
+                // Do something with the boolean value
+                }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -153,7 +174,14 @@ class Catch : AppCompatActivity() {
 
             // Do something with the QR code String (e.g. display it on a TextView)
             //textView.text = qrCodeString
-            Log.d("PPPPPPPPPPPP",qrCodeString)
+            //Log.d("PPPPPPPPPPPP",qrCodeString)
+            //Toast.makeText(this, qrCodeString, Toast.LENGTH_SHORT).show()
+
+            if (flag.contentEquals(qrCodeString)){
+                val winRef = database.getReference("games").child(gameId!!).child("win")
+                winRef.setValue(true)
+            }
+            return
         }
     }
 

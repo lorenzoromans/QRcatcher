@@ -9,7 +9,8 @@ data class Game(
     //val qrImage: String? = null,
     val latitude: Double? = null,
     val longitude: Double? = null,
-    val flag: String? = null
+    val flag: String? = null,
+    val win: Boolean?=null
 
 )/**{
     constructor(): this ("","","","",0.0,0.0,"")
