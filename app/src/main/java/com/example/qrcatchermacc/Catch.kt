@@ -3,6 +3,8 @@ package com.example.qrcatchermacc
 
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -62,6 +64,21 @@ class Catch : AppCompatActivity() {
         val update = mapOf(username to player)
         playersRef.updateChildren(update)
     }
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.menu_catch, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.qr_scanner -> {
+            // do stuff
+            Log.d("JJJJJJJJJJJJJJJJ","uiuhiwefhuiowefhiuowefohiuwef")
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
 
     override fun onDestroy() {
         super.onDestroy()
