@@ -10,8 +10,6 @@ import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
 import android.hardware.SensorManager
-import android.location.Address
-import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
@@ -28,17 +26,21 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.example.qrcatchermacc.Catch
 import com.example.qrcatchermacc.Game
 import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.FragmentCompassBinding
+import com.google.android.gms.flags.FlagSource.G
 import com.google.android.gms.location.*
 import com.google.firebase.database.*
 import java.util.*
 import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
+import kotlin.math.*
 
 
 class CompassFragment : Fragment(), SensorEventListener {
@@ -85,6 +87,8 @@ class CompassFragment : Fragment(), SensorEventListener {
     private var locationCallback: LocationCallback? = null
     private var locationRequest: LocationRequest? = null
 
+    private var distanza: Double =0.0
+
     @SuppressLint("MissingPermission")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,6 +96,8 @@ class CompassFragment : Fragment(), SensorEventListener {
         savedInstanceState: Bundle?
     ): View {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+
 
         val database = FirebaseDatabase.getInstance()
         val gamesRef = database.getReference("games")
@@ -132,6 +138,10 @@ class CompassFragment : Fragment(), SensorEventListener {
         _binding = FragmentCompassBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        binding.scannerImage.setOnClickListener{
+            (activity as Catch).calledScanQRCode()
+        }
+
         val textView: TextView = binding.textCompass
         compassViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
@@ -144,8 +154,8 @@ class CompassFragment : Fragment(), SensorEventListener {
         locationRequest = LocationRequest.create()
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        locationRequest!!.setInterval(2 * 1000) // 10 seconds
-        locationRequest!!.setFastestInterval(1 * 1000) // 5 seconds
+        locationRequest!!.setInterval(5 * 1000) // 5 seconds
+        locationRequest!!.setFastestInterval(2 * 1000) // 2 seconds
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
@@ -173,7 +183,7 @@ class CompassFragment : Fragment(), SensorEventListener {
                     previousLatitude = latitude
                     previousLongitude = longitude
 
-                    //mFusedLocationClient.removeLocationUpdates(this)
+                    setTextViewDistance()
                 }
             }
         }
@@ -261,8 +271,11 @@ class CompassFragment : Fragment(), SensorEventListener {
         // set the animation after the end of the reservation status
         ra.fillAfter = true
 
-        // Start the animation
-        binding.imageViewCompass.startAnimation(ra)
+        // Start the animation if visible
+        if (binding.imageViewCompass.visibility==View.VISIBLE){
+            binding.imageViewCompass.startAnimation(ra)
+        }
+
         //compassImg!!.startAnimation(ra)
         //currentDegree = -mAzimuth.toFloat()
         currentDegree = angle
@@ -276,6 +289,36 @@ class CompassFragment : Fragment(), SensorEventListener {
         val y = sin(longDiff) * cos(latT)
         val x = cos(lat) * sin(latT) - sin(lat) * cos(latT) * cos(longDiff)
         return (Math.toDegrees(atan2(y, x)) + 360) % 360
+    }
+
+    fun distance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
+        val R = 6371e3 // earth radius in meters
+        val phi1 = Math.toRadians(lat1)
+        val phi2 = Math.toRadians(lat2)
+        val deltaPhi = Math.toRadians(lat2 - lat1)
+        val deltaLambda = Math.toRadians(lon2 - lon1)
+        val a = sin(deltaPhi / 2).pow(2) + cos(phi1) * cos(phi2) * sin(deltaLambda / 2).pow(2)
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+        return R * c
+    }
+    fun setTextViewDistance(){
+        distanza=distance(latitude,longitude,targetLatitude,targetLongitude)
+        binding.textCompass.text = distanza.toString()
+
+        Log.d("compassvisibility",binding.imageViewCompass.visibility.toString())
+        Log.d("qrvisibility",binding.scannerImage.visibility.toString())
+
+        if(distanza < 10.00){
+            Log.d("minore",distanza.toString())
+            binding.imageViewCompass.setVisibility(View.GONE)
+            binding.scannerImage.setVisibility(View.VISIBLE)
+        }else{
+            Log.d("maggiore",distanza.toString())
+            binding.imageViewCompass.setVisibility(View.VISIBLE)
+            binding.scannerImage.setVisibility(View.GONE)
+        }
+
+
     }
 
     private fun isLocationEnabled(): Boolean {

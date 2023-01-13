@@ -118,6 +118,18 @@ class Catch : AppCompatActivity() {
         return true
     }
 
+
+    fun calledScanQRCode(){
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
+            != PackageManager.PERMISSION_GRANTED) {
+            // Permission is not granted
+            requestCameraPermission()
+        } else {
+            // Permission has already been granted
+            ScanQRCode(binding.root)
+        }
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.qr_scanner -> {
             // do stuff
@@ -176,6 +188,7 @@ class Catch : AppCompatActivity() {
         startActivityForResult(scanQRCodeIntent, REQUEST_IMAGE_CAPTURE)
 
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -195,7 +208,7 @@ class Catch : AppCompatActivity() {
                 val winRef = database.getReference("games").child(gameId!!).child("win")
                 winRef.setValue(true)
             }
-            return
+            //return
         }
     }
 
@@ -240,4 +253,5 @@ class Catch : AppCompatActivity() {
         queue.add(stringRequest)
 
     }
+    
 }

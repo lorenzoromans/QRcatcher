@@ -42,7 +42,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     private var players: List<Player?> = ArrayList()
     private var allMarkers: ArrayList<Marker> = ArrayList()
     private lateinit var job: Job
-    private lateinit var myLocation: LatLng
+    private var myLocation: LatLng? = null
 
 
     //permission checks suppressed since they are already done in the compass fragment and the compassFragment is still listening for position to update the DB of the players
@@ -102,7 +102,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         //val currentLocation = map.myLocation
         if (myLocation != null) {
             //val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLocation, 15f)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLocation!!, 15f)
             map.animateCamera(cameraUpdate)
         }
 
@@ -156,28 +156,35 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                 allMarkers.clear()
                 for (player in players) {
 
-                    val playerLoc = LatLng(player?.latitude!!, player?.longitude!!)
-                    if (username == player?.username) {
+                    val playerLoc = LatLng(player?.latitude!!, player.longitude!!)
+                    if (username.contentEquals(player.username)) {
                         myLocation = playerLoc
                     }
 
-                    Glide.with(requireContext())
-                        .asBitmap()
-                        .load(player.imageUrl)
-                        .into(object : CustomTarget<Bitmap>() {
-                            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                                val res = BitmapDescriptorFactory.fromBitmap(resource)
-                                val mLocationMarker: Marker = map.addMarker(
-                                    MarkerOptions().position(playerLoc).title(player?.username)
-                                        .icon(res)
-                                )!! // add the marker to Map
-                                allMarkers.add(mLocationMarker) // add the marker to array
-                            }
+                    try {
+                        Glide.with(requireContext())
+                            .asBitmap()
+                            .load(player.imageUrl)
+                            .into(object : CustomTarget<Bitmap>() {
+                                override fun onResourceReady(
+                                    resource: Bitmap,
+                                    transition: Transition<in Bitmap>?
+                                ) {
+                                    val res = BitmapDescriptorFactory.fromBitmap(resource)
+                                    val mLocationMarker: Marker = map.addMarker(
+                                        MarkerOptions().position(playerLoc).title(player?.username)
+                                            .icon(res)
+                                    )!! // add the marker to Map
+                                    allMarkers.add(mLocationMarker) // add the marker to array
+                                }
 
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                                // Clear the Bitmap if needed
-                            }
-                        })
+                                override fun onLoadCleared(placeholder: Drawable?) {
+                                    // Clear the Bitmap if needed
+                                }
+                            })
+                    }catch (e : Exception){
+                        Log.d("STACKTRACEMAP" , e.stackTrace.toString())
+                    }
 
                 }
                 delay(3000)
