@@ -11,7 +11,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -34,7 +33,6 @@ import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import java.sql.Ref
 
 
 class Catch : AppCompatActivity() {
@@ -85,6 +83,22 @@ class Catch : AppCompatActivity() {
         playersRef.updateChildren(update)
 
         var flagRef=database.getReference("games").child(gameId!!).child("flag")
+        var winRef=database.getReference("games").child(gameId!!).child("win")
+        winRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                var win = dataSnapshot.getValue(Boolean::class.java)!!
+                if (win) {
+                    val intent = Intent(this@Catch, Win::class.java)
+                    intent.putExtra("GameId",gameId)
+                    startActivity(intent)
+                    this@Catch.finish()
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
 
         flagRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
