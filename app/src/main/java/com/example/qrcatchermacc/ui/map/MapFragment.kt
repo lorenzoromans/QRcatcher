@@ -64,7 +64,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         val rome = LatLng(41.890984526885234, 12.503624605850224)
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(rome, 15f)
         googleMap.animateCamera(cameraUpdate)
-        googleMap.isMyLocationEnabled = true
+        //googleMap.isMyLocationEnabled = true
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
 

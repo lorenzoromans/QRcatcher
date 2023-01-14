@@ -12,7 +12,6 @@
         android:scaleX="0.6"
         android:scaleY="0.6"
         android:src="@drawable/img_compass"
-        android:visibility="gone"
         />
 
     <ImageView

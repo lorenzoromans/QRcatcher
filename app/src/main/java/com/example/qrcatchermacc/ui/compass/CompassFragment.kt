@@ -183,7 +183,11 @@ class CompassFragment : Fragment(), SensorEventListener {
                     previousLatitude = latitude
                     previousLongitude = longitude
 
+                    try{
                     setTextViewDistance()
+                    }catch(e : Exception){
+                        Log.d("eccezione compass","eccezione binding compass")
+                    }
                 }
             }
         }

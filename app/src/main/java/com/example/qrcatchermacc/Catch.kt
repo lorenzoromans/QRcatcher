@@ -25,14 +25,11 @@ import com.example.qrcatchermacc.SavedPreference.getEmail
 import com.example.qrcatchermacc.SavedPreference.getImage
 import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.ActivityCatchBinding
-import com.google.firebase.database.FirebaseDatabase
 import com.android.volley.Request
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 
 
 class Catch : AppCompatActivity() {
@@ -43,6 +40,8 @@ class Catch : AppCompatActivity() {
     private val CAMERA_PERMISSION_REQUEST_CODE = 1
     private lateinit var database : FirebaseDatabase
     private lateinit var flag: String
+    private lateinit var winListener : ValueEventListener 
+    private lateinit var winRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,23 +82,25 @@ class Catch : AppCompatActivity() {
         playersRef.updateChildren(update)
 
         var flagRef=database.getReference("games").child(gameId!!).child("flag")
-        var winRef=database.getReference("games").child(gameId!!).child("win")
-        winRef.addValueEventListener(object : ValueEventListener {
+        winRef=database.getReference("games").child(gameId!!).child("win")
+
+        winListener=object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 var win = dataSnapshot.getValue(Boolean::class.java)!!
                 if (win) {
-                    val intent = Intent(this@Catch, Win::class.java)
-                    intent.putExtra("GameId",gameId)
-                    startActivity(intent)
+                    val intentWin = Intent(this@Catch, Win::class.java)
+                    intentWin.putExtra("GameId",gameId)
+                    startActivity(intentWin)
                     this@Catch.finish()
                 }
             }
-
+        
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
             }
-        })
-
+        }
+        winRef.addValueEventListener(winListener)
+        
         flagRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 flag = dataSnapshot.getValue(String::class.java)!!
@@ -109,8 +110,8 @@ class Catch : AppCompatActivity() {
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
             }
-        })
 
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -234,6 +235,7 @@ class Catch : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        winRef.removeEventListener(winListener)
         val myPlayerRef =  FirebaseDatabase.getInstance().getReference("games").child(gameId!!).child("players").child(getUsername(this)!!)
         myPlayerRef.removeValue()
 
