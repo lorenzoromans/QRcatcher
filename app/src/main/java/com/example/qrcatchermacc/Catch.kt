@@ -40,7 +40,7 @@ class Catch : AppCompatActivity() {
     private val CAMERA_PERMISSION_REQUEST_CODE = 1
     private lateinit var database : FirebaseDatabase
     private lateinit var flag: String
-    private lateinit var winListener : ValueEventListener 
+    private lateinit var winListener : ValueEventListener
     private lateinit var winRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,13 +94,13 @@ class Catch : AppCompatActivity() {
                     this@Catch.finish()
                 }
             }
-        
+
             override fun onCancelled(error: DatabaseError) {
                 // Handle error
             }
         }
         winRef.addValueEventListener(winListener)
-        
+
         flagRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 flag = dataSnapshot.getValue(String::class.java)!!
@@ -227,10 +227,14 @@ class Catch : AppCompatActivity() {
 
         // Return the QR code String
         // Get the first QR code from the list
-        val qrCode = qrCodeString.valueAt(0)
+        var qrCode=""
+        if( qrCodeString.size() !=0){
+            qrCode = qrCodeString.valueAt(0).rawValue
+        }
+//        qrCode = qrCodeString.valueAt(0)
 
         // Return the QR code String
-        return qrCode.rawValue
+        return qrCode
     }
 
     override fun onDestroy() {

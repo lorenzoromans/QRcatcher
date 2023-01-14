@@ -22,15 +22,15 @@ class Win : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWinBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        addWinnedGame()
         binding.backHome.setOnClickListener{
-            addWinnedGame()
+
             resetWin()
         }
     }
 
     override fun onBackPressed(){
-        addWinnedGame()
+
         resetWin()
     }
 
@@ -63,6 +63,7 @@ class Win : AppCompatActivity() {
                     }
 
                 var url= "https://bbooss97.pythonanywhere.com/store?data=$username,$gameId,$name,$description"
+                Log.d("zzzzzzzzzzz",url)
                 val queue = Volley.newRequestQueue(this@Win)
 
                 val stringRequest = StringRequest(
