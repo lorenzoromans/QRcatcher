@@ -12,7 +12,8 @@
         android:scaleX="0.6"
         android:scaleY="0.6"
         android:src="@drawable/img_compass"
-        android:visibility="gone" />
+        android:visibility="gone"
+        />
 
     <ImageView
         android:id="@+id/scanner_image"
@@ -23,6 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         app:srcCompat="@drawable/qrcatcher_logo"
+        android:visibility="gone"
         />
 
 

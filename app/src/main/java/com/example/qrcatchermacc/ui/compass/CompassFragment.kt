@@ -154,8 +154,8 @@ class CompassFragment : Fragment(), SensorEventListener {
         locationRequest = LocationRequest.create()
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
-        locationRequest!!.setInterval(5 * 1000) // 5 seconds
-        locationRequest!!.setFastestInterval(2 * 1000) // 2 seconds
+        locationRequest!!.setInterval(2 * 1000) // 2 seconds
+        locationRequest!!.setFastestInterval(2 * 1000) // 1 seconds
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
@@ -269,7 +269,8 @@ class CompassFragment : Fragment(), SensorEventListener {
         ra.duration = 210
 
         // set the animation after the end of the reservation status
-        ra.fillAfter = true
+        //changed to false
+        ra.fillAfter = false
 
         // Start the animation if visible
         if (binding.imageViewCompass.visibility==View.VISIBLE){
