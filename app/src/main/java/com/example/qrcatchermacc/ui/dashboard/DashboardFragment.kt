@@ -58,36 +58,11 @@ class DashboardFragment : Fragment() {
         dashboardViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
-        /**
-        binding.startGame.setOnClickListener {
-            val intent = Intent(requireActivity(), Catch::class.java)
-            startActivity(intent)
-        }
-        */
+
         layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
 
 
-        //adapter = RecyclerAdapter()
-        // Connect to the Cloud Firestore database
-        /**
-        var ids : MutableList<String?> = ArrayList()
-        var names : MutableList<String?> = ArrayList()
-        var descriptions : MutableList<String?> = ArrayList()
-        var qrImages : MutableList<String?> = ArrayList()
-
-        val db = Firebase.firestore
-        val gamesRef = db.collection("games")
-
-        val game1 = Game(name = "Game 1", description = "This is the first game")
-        val game2 = Game(name = "Game 2", description = "This is the second game")
-        val game3 = Game(name = "Game 3", description = "This is the third game")
-
-        val games = listOf(game1, game2, game3)
-        for (game in games) {
-            gamesRef.add(game)
-        }
-        */
 
         // Connect to the database
         var database = FirebaseDatabase.getInstance()
@@ -100,22 +75,16 @@ class DashboardFragment : Fragment() {
                     Log.d("aaaaaaaa","CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                     val games = dataSnapshot.children.map { it.getValue(Game::class.java) }
                     for (game in games) {
-                        // Do something with the game's attributes here
-                        /**
-                        val id = game?.id
-                        val name= game?.name
-                        val description = game?.description
-                        val qrImage = game?.imageUrl
-                        Log.d("aaaaaaaaaa",id+name+description+qrImage+"+++++++++++++++++++++++++++++++++++++++++++++")
-                        */
                         ids.add(game?.id)
                         names.add(game?.name)
                         descriptions.add(game?.description)
                         qrImages.add(game?.imageUrl)
                     }
                     // Pass the arrays to the RecyclerView adapter
-                    adapter = RecyclerAdapter(ids, names, descriptions, qrImages)
-                    binding.recyclerView.adapter = adapter
+                    try {
+                        adapter = RecyclerAdapter(ids, names, descriptions, qrImages)
+                        binding.recyclerView.adapter = adapter
+                    }catch(e: Exception){    }
                 }
 
             override fun onCancelled(error: DatabaseError) {
@@ -123,39 +92,6 @@ class DashboardFragment : Fragment() {
                 Log.w("aaaaaaaaaaaaaaaa", "Failed to read value.", error.toException())
             }
             })
-
-
-        /*
-        val db = Firebase.firestore
-
-        // Get the "games" collection
-        val gamesRef = db.collection("games")
-
-        suspend fun getIt(): QuerySnapshot? { return gamesRef.get().await()}
-
-        fun getSnapshot(): QuerySnapshot? = runBlocking { return@runBlocking getIt() }
-
-        // Retrieve the data for the collection
-        val snapshot = getSnapshot()
-
-        // Iterate through the documents in the snapshot
-        if (snapshot != null) {
-            for (document in snapshot) {
-                // Get the data for the document
-                val game = document.toObject(Game::class.java)
-
-                // Add the data to the arrays
-                ids.add(game.id)
-                names.add(game.name)
-                descriptions.add(game.description)
-                qrImages.add(game.imageUrl)
-            }
-        }
-        */
-
-        // Pass the arrays to the RecyclerView adapter
-        //adapter = RecyclerAdapter(ids, names, descriptions, qrImages)
-
 
 
 
