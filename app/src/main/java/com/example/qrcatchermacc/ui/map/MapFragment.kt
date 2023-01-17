@@ -64,7 +64,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         val rome = LatLng(41.890984526885234, 12.503624605850224)
         val cameraUpdate = CameraUpdateFactory.newLatLngZoom(rome, 15f)
         googleMap.animateCamera(cameraUpdate)
-        //googleMap.isMyLocationEnabled = true
+        googleMap.isMyLocationEnabled = true
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
 
@@ -105,6 +105,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
             val cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLocation!!, 15f)
             map.animateCamera(cameraUpdate)
         }
+
 
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).

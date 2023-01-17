@@ -3,9 +3,7 @@ package com.example.qrcatchermacc.ui.notifications
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -52,23 +50,31 @@ class NotificationsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val notificationsViewModel =
-            ViewModelProvider(this).get(NotificationsViewModel::class.java)
+        //val notificationsViewModel =
+        //    ViewModelProvider(this).get(NotificationsViewModel::class.java)
 
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        /**
         val textView: TextView = binding.textNotifications
         notificationsViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+        */
+
+
+        setHasOptionsMenu(true)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.your_web_client_id))
             .requestEmail()
             .build()
         mGoogleSignInClient= GoogleSignIn.getClient(requireActivity(),gso)
-        binding.usernameShown.text = SavedPreference.getEmail(requireActivity())
+
+        binding.usernameShown.text = SavedPreference.getUsername(requireActivity())
+        binding.emailShown.text = SavedPreference.getEmail(requireActivity())
+
         val acct = GoogleSignIn.getLastSignedInAccount(requireActivity())
 
     
@@ -78,14 +84,6 @@ class NotificationsFragment : Fragment() {
             .load(imageUrl)
             .into(binding.immagine)
 
-        binding.logout.setOnClickListener {
-            mGoogleSignInClient.signOut().addOnCompleteListener {
-                val intent= Intent(requireActivity(), LoginScreen::class.java)
-                Toast.makeText(requireActivity(),"Logging Out", Toast.LENGTH_SHORT).show()
-                startActivity(intent)
-                requireActivity().finish()
-            }
-        }
 
         layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
@@ -93,6 +91,15 @@ class NotificationsFragment : Fragment() {
 
         return root
     }
+
+
+    //LAST ADDED--------------------------------------------------------------------
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        activity?.findViewById<TextView>(R.id.item_title)?.isSelected  = true
+        activity?.findViewById<TextView>(R.id.item_title)?.setSingleLine()
+    }
+
 
     fun getWinnedGames(){
         val username = SavedPreference.getUsername(requireContext())
@@ -126,6 +133,17 @@ class NotificationsFragment : Fragment() {
                             adapter = ProfileRecyclerAdapter(gameIds, nameObject, description, qrImages)
                             binding.recyclerView.adapter = adapter
                         }catch(e: Exception){    }
+
+
+                    /**
+                    val scroll = activity?.findViewById<ScrollView>(R.id.scrollView)
+                    //var animator = ObjectAnimator.ofInt(scroll, "scrollY", scroll.getScrollY(), targetPosition)
+                    val objectAnimator = ObjectAnimator.ofInt(scroll, "scrollX", 0, 250).setDuration(
+                        500
+                    )
+                    objectAnimator.start()
+                    */
+
                     }
 
 
@@ -137,7 +155,29 @@ class NotificationsFragment : Fragment() {
 
 
         queue.add(stringRequest)
+
+
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.menu_profile, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.logout -> {
+            // do stuff
+            mGoogleSignInClient.signOut().addOnCompleteListener {
+                val intent= Intent(requireActivity(), LoginScreen::class.java)
+                Toast.makeText(requireActivity(),"Logging Out", Toast.LENGTH_SHORT).show()
+                startActivity(intent)
+                requireActivity().finish()
+            }
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
