@@ -93,10 +93,7 @@ class DashboardFragment : Fragment() {
             }
             })
 
-
-
-
-
+        
         //binding.recyclerView.adapter = adapter
         return root
     }

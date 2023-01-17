@@ -7,6 +7,7 @@ import android.util.Log
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import com.bumptech.glide.Glide
 import com.example.qrcatchermacc.databinding.ActivityWinBinding
 import com.example.qrcatchermacc.ui.dashboard.RecyclerAdapter
 import com.google.api.AnnotationsProto.http
@@ -27,6 +28,10 @@ class Win : AppCompatActivity() {
 
             resetWin()
         }
+        Glide.with(this)
+            .asGif()
+            .load(R.drawable.teammates)
+            .into(binding.imageView)
     }
 
     override fun onBackPressed(){

@@ -11,14 +11,8 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.qrcatchermacc.Catch
-import com.example.qrcatchermacc.Game
 import com.example.qrcatchermacc.R
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import java.util.concurrent.CountDownLatch
-import kotlin.concurrent.thread
+
 
 
 class RecyclerAdapter(
@@ -57,17 +51,14 @@ class RecyclerAdapter(
         var itemDetail: TextView
 
         init{
-            
 
             itemImage = itemView.findViewById(R.id.item_image)
             itemTitle = itemView.findViewById(R.id.item_title)
             itemDetail = itemView.findViewById(R.id.item_detail)
+            
 
 
             itemView.setOnClickListener{
-
-              
-
                 val position: Int = adapterPosition
                 Toast.makeText(itemView.context, "you clicked ${names[position]}", Toast.LENGTH_LONG).show()
                 val intent = Intent(itemView.context, Catch::class.java)
