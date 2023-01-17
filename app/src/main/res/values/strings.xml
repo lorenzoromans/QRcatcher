@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">QRcatcherMACC</string>
+    <string name="app_name">QRcatcher</string>
     <string name="title_home">Home</string>
     <string name="title_dashboard">Games</string>
     <string name="title_notifications">Profile</string>
