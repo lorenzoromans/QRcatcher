@@ -11,7 +11,6 @@
 
     <application
         android:allowBackup="true"
-        android:screenOrientation="portrait"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher2"
@@ -22,7 +21,8 @@
         tools:targetApi="31" >
         <activity
             android:name=".Win"
-            android:exported="false" >
+            android:exported="false"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -36,7 +36,8 @@
 
         <activity
             android:name=".LoginScreen"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,7 +50,8 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true" >
+            android:exported="true"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
@@ -58,7 +60,8 @@
             android:name=".Catch"
             android:exported="false"
             android:label="@string/title_activity_catch"
-            android:parentActivityName=".MainActivity" >
+            android:parentActivityName=".MainActivity"
+            android:screenOrientation="portrait">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
@@ -66,21 +69,22 @@
         <!-- Catch activity Fragments -->
         <activity
             android:name=".ui.chat.ChatFragment"
-            android:parentActivityName=".Catch" >
+            android:parentActivityName=".Catch">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Catch" />
         </activity>
         <activity
             android:name=".ui.compass.CompassFragment"
-            android:parentActivityName=".Catch" >
+            android:parentActivityName=".Catch"
+            >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Catch" />
         </activity>
         <activity
             android:name=".ui.map.MapFragment"
-            android:parentActivityName=".Catch" >
+            android:parentActivityName=".Catch">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Catch" />

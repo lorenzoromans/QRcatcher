@@ -28,12 +28,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="100dp">
+            android:layout_marginTop="70dp"
+            android:orientation="vertical">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="164dp"
+                android:layout_height="159dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="20dp"
                 android:src="@drawable/qrcatcher_logo" />
@@ -42,21 +42,23 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text= "QRcatcher"
+                android:fontFamily="@font/baloo_bhaijaan"
+                android:text="QRcatcher"
                 android:textAlignment="center"
+                android:textColor="#1E1E1E"
                 android:textSize="40sp" />
             <!--android:text="Google Login" -->
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/Signin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:cardCornerRadius="30dp"
-                app:cardElevation="30dp"
                 android:layout_gravity="center"
                 android:layout_margin="50dp"
                 android:clickable="true"
                 android:focusable="true"
-                android:id="@+id/Signin">
+                app:cardCornerRadius="30dp"
+                app:cardElevation="30dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -67,9 +69,9 @@
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="30dp"
-                        android:layout_gravity="start"
-                        android:src="@drawable/google_button"
-                        android:layout_marginEnd="10dp"/>
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="10dp"
+                        android:src="@drawable/google_button" />
 
                     <TextView
                         android:layout_width="match_parent"
@@ -77,8 +79,8 @@
                         android:layout_gravity="center"
                         android:text="Sign in with Google"
                         android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:textColor="@android:color/white"/>
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 

@@ -1,6 +1,7 @@
 package com.example.qrcatchermacc
 
 import android.content.Intent
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -23,15 +24,20 @@ class Win : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityWinBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
         addWinnedGame()
+
         binding.backHome.setOnClickListener{
 
             resetWin()
+
         }
         Glide.with(this)
             .asGif()
             .load(R.drawable.teammates)
             .into(binding.imageView)
+
     }
 
     override fun onBackPressed(){
@@ -43,6 +49,7 @@ class Win : AppCompatActivity() {
         val gameId = intent!!.extras!!.getString("GameId")!!
         val winRef =  FirebaseDatabase.getInstance().getReference("games").child(gameId).child("win")
         winRef.setValue(false)
+        Thread.sleep(100)
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent)
         this.finish()

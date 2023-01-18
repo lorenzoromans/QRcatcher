@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout"
+        android:background="@drawable/profile_bk"
         android:padding="16dp">
         <ImageView
             android:id="@+id/item_image"
@@ -34,12 +35,16 @@
         <TextView
             android:id="@+id/item_detail"
             android:layout_width="236dp"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
+            android:text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa aaaaaaaaaaa"
+            android:textSize="11.5sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/item_image"
-            app:layout_constraintTop_toBottomOf="@+id/item_title" />
+            app:layout_constraintTop_toBottomOf="@+id/item_title"
+            android:inputType="textMultiLine"/>
+        <!--android:layout_height="50dp"-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

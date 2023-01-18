@@ -9,6 +9,9 @@ object SavedPreference {
     const val EMAIL= "email"
     const val USERNAME="username"
     var IMAGE : String = ""
+    var LATITUDE = "latitude"
+    var LONGITUDE  ="longitude"
+
 
     private  fun getSharedPreference(ctx: Context?): SharedPreferences? {
         return PreferenceManager.getDefaultSharedPreferences(ctx)
@@ -26,6 +29,8 @@ object SavedPreference {
         )?.edit()?.putString(const.toString(), string.toString())?.apply()
     }
 
+
+
     fun getEmail(context: Context)= getSharedPreference(
         context
     )?.getString(EMAIL,"")
@@ -35,6 +40,29 @@ object SavedPreference {
             context,
             EMAIL,
             email
+        )
+    }
+
+    fun getLatitude(context: Context)= getSharedPreference(
+        context
+    )?.getString(LATITUDE,"0.0")
+
+    fun setLatitude(context: Context, latitude: String){
+        editor(
+            context,
+            LATITUDE,
+            latitude
+        )
+    }
+    fun getLongitude(context: Context)= getSharedPreference(
+        context
+    )?.getString(LONGITUDE,"0.0")
+
+    fun setLongitude(context: Context, longitude: String){
+        editor(
+            context,
+            LONGITUDE,
+            longitude
         )
     }
 

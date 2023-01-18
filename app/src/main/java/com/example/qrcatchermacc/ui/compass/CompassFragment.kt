@@ -12,6 +12,7 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationManager
+import android.os.Build.VERSION_CODES.S
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -31,6 +32,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.qrcatchermacc.Catch
 import com.example.qrcatchermacc.Game
+import com.example.qrcatchermacc.SavedPreference
 import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.FragmentCompassBinding
 import com.google.android.gms.flags.FlagSource.G
@@ -208,6 +210,7 @@ class CompassFragment : Fragment(), SensorEventListener {
 
         return root
     }
+
 
     @SuppressLint("MissingPermission")
     override fun onStart() {
@@ -412,14 +415,26 @@ class CompassFragment : Fragment(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
-
-
+        /*
+        Log.d("pause","pause")
+        SavedPreference.setLatitude(requireContext(), latitude.toString())
+        SavedPreference.setLatitude(requireContext(), longitude.toString())
+        */
     }
 
 
     override fun onResume() {
         super.onResume()
         start()
+        /*
+        Log.d("resume","resume")
+        latitude= SavedPreference.getLatitude(requireContext())!!.toDouble()
+        longitude= SavedPreference.getLongitude(requireContext())!!.toDouble()
+        setTextViewDistance()
+        */
+        // if (binding.imageViewCompass.visibility == View.GONE || binding.scannerImage.visibility == View.GONE) {
+        //    binding.progressBar2.setVisibility(View.VISIBLE)
+        //}
     }
 
     override fun onDestroyView(){

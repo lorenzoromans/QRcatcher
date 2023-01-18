@@ -1,4 +1,125 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="@color/colorDarkGray">
+
+
+    <View
+        android:id="@+id/upper_view"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/profile_bk"
+        android:rotation="16"
+        android:rotationY="-19"
+        android:scaleX="2"
+        android:scaleY="1.2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/avatar1"
+        android:layout_width="66dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintStart_toEndOf="@+id/avatar2"
+        app:layout_constraintTop_toTopOf="@+id/avatar2"
+        app:srcCompat="@drawable/simple_avatar" />
+
+    <TextView
+        android:id="@+id/app_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:fontFamily="@font/baloo_bhaijaan"
+        android:text="@string/aboutDescription"
+        android:textAlignment="center"
+        android:textSize="11.2sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/qrcatcherlogo"
+        android:layout_width="114dp"
+        android:layout_height="91dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="13dp"
+        app:layout_constraintBottom_toTopOf="@+id/app_description"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/qrcatcher_logo" />
+
+
+    <!-- view per il android graphics -->
+    <View
+        android:id="@+id/view2"
+        android:layout_width="138dp"
+        android:layout_height="41dp"
+        app:layout_constraintBottom_toTopOf="@+id/qrcatcherlogo"
+        app:layout_constraintStart_toStartOf="parent" />
+    <!-- view per il android graphics -->
+
+    <TextView
+        android:id="@+id/the_team"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/baloo_bhaijaan"
+        android:text="@string/the_team"
+        android:textSize="22sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/avatar2"
+        android:layout_width="66dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toEndOf="@+id/the_team"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/simple_avatar" />
+
+    <TextView
+        android:id="@+id/lorenzo"
+        android:layout_width="69dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="8dp"
+        android:text="Lorenzo Romagnoli 1975517"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/avatar2"
+        app:layout_constraintTop_toBottomOf="@+id/avatar2" />
+
+    <TextView
+        android:id="@+id/andrea"
+        android:layout_width="69dp"
+        android:layout_height="59dp"
+        android:layout_marginTop="8dp"
+        android:text="Andrea Morelli 1845525"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="@+id/avatar1"
+        app:layout_constraintTop_toBottomOf="@+id/avatar1" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+
+
+
+
+
+
+<!--
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -21,3 +142,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+-->
