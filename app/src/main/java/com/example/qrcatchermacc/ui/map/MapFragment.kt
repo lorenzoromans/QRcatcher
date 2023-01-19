@@ -62,8 +62,8 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
          */
 
         val rome = LatLng(41.890984526885234, 12.503624605850224)
-        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(rome, 15f)
-        googleMap.animateCamera(cameraUpdate)
+        val cameraUpdate = CameraUpdateFactory.newLatLngZoom(rome, 5f)
+        map.animateCamera(cameraUpdate)
         googleMap.isMyLocationEnabled = true
         googleMap.setOnMyLocationButtonClickListener(this)
         googleMap.setOnMyLocationClickListener(this)
@@ -102,7 +102,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         //val currentLocation = map.myLocation
         if (myLocation != null) {
             //val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLocation!!, 15f)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLocation!!, 10f)
             map.animateCamera(cameraUpdate)
         }
 
@@ -126,8 +126,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
-
-
     }
 
     override fun onMapReady(p0: GoogleMap) {

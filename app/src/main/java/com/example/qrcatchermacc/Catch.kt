@@ -2,6 +2,7 @@ package com.example.qrcatchermacc
 
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -11,9 +12,11 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -61,12 +64,9 @@ class Catch : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         gameId = intent.getStringExtra("GameId")
         Log.d("inside catch id",gameId!!)
-
-
 
         val username= getUsername(this)!!
         val email = getEmail(this)!!
@@ -113,6 +113,23 @@ class Catch : AppCompatActivity() {
 
         })
     }
+    fun closeCatch(){
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle("Confirm Action")
+        builder.setMessage("Are you sure you want to go back? Any unsaved changes will be lost.")
+        builder.setPositiveButton("Yes") { dialog, which ->
+            finish()
+        }
+        builder.setNegativeButton("No") { dialog, which ->
+            // Do nothing
+        }
+        val dialog: AlertDialog = builder.create()
+        dialog.show()
+    }
+
+    override fun onBackPressed() {
+        closeCatch()
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu_catch, menu)
@@ -131,6 +148,7 @@ class Catch : AppCompatActivity() {
         }
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.qr_scanner -> {
             // do stuff
@@ -144,7 +162,11 @@ class Catch : AppCompatActivity() {
             }
             true
         }
-        else -> super.onOptionsItemSelected(item)
+        else -> {
+            closeCatch() //super.onOptionsItemSelected(item)
+            true
+        }
+
     }
 
     private fun requestCameraPermission() {

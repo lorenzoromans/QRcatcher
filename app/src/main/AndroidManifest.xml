@@ -76,8 +76,7 @@
         </activity>
         <activity
             android:name=".ui.compass.CompassFragment"
-            android:parentActivityName=".Catch"
-            >
+            android:parentActivityName=".Catch">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".Catch" />
