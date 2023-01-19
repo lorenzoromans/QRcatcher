@@ -36,7 +36,7 @@ class Win : AppCompatActivity() {
         Glide.with(this)
             .asGif()
             .load(R.drawable.teammates)
-            .into(binding.imageView)
+            .into(binding.teammates)
 
     }
 

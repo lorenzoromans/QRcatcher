@@ -24,17 +24,29 @@ class MyViewHome(context: Context) : View(context) {
     init {
 
     }
-
-
-    override fun onDraw(canvas: Canvas) {
+    
+    private val paint = Paint()
+    private val path = Path()
+    override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
 
-        var paint=Paint()
-        paint.color = Color.RED
-        //paint.setStyle(Paint.Style.FILL)
-        //canvas.drawPath(path,paint)
-        if (canvas != null) {
-            canvas.drawCircle(100f, 100f, 50f, paint)
-        }
+        val topLeft = PointF(0f, 0f)
+        val topRight = PointF(width.toFloat(), 0f)
+        val bottomRight = PointF(width.toFloat(), height.toFloat())
+        val bottomLeft = PointF(0f, height.toFloat())
+
+        val colors = intArrayOf(Color.RED, Color.YELLOW)
+        val positions = floatArrayOf(0f, 1f)
+
+        val gradient = LinearGradient(topLeft.x, topLeft.y, bottomRight.x, bottomRight.y, colors, positions, Shader.TileMode.MIRROR)
+        paint.shader = gradient
+
+        path.moveTo(topLeft.x, topLeft.y)
+        path.lineTo(topRight.x, topRight.y)
+        path.lineTo(bottomRight.x, bottomRight.y)
+        path.lineTo(bottomLeft.x, bottomLeft.y/2)
+        path.lineTo(topLeft.x, topLeft.y)
+
+        canvas?.drawPath(path, paint)
     }
 }
