@@ -320,10 +320,12 @@ class CompassFragment : Fragment(), SensorEventListener {
             Log.d("minore",distanza.toString())
             binding.imageViewCompass.setVisibility(View.GONE)
             binding.scannerImage.setVisibility(View.VISIBLE)
+            binding.progressBar.setVisibility(View.GONE)
         }else{
             Log.d("maggiore",distanza.toString())
             binding.imageViewCompass.setVisibility(View.VISIBLE)
             binding.scannerImage.setVisibility(View.GONE)
+            binding.progressBar.setVisibility(View.GONE)
         }
 
 

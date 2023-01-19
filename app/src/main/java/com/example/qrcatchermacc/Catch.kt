@@ -3,6 +3,7 @@ package com.example.qrcatchermacc
 
 import android.Manifest
 import android.app.AlertDialog
+import android.app.ProgressDialog.show
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -230,9 +231,16 @@ class Catch : AppCompatActivity() {
             if (flag.contentEquals(qrCodeString)){
                 val winRef = database.getReference("games").child(gameId!!).child("win")
                 winRef.setValue(true)
+            }else{
+                Toast.makeText(this, "Wrong or not detected correctly QRcode, try again", Toast.LENGTH_LONG)
+                .show()
             }
             //return
+        }else{
+            Toast.makeText(this, "QRcode not detected correctly, try again", Toast.LENGTH_LONG)
+            .show()
         }
+
     }
 
     private fun decodeQRCodeImage(image: Bitmap): String {

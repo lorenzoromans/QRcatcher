@@ -97,16 +97,12 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
     }
 
     override fun onMyLocationButtonClick(): Boolean {
-        Toast.makeText(requireContext(), "MyLocation button clicked", Toast.LENGTH_SHORT).show()
-
         //val currentLocation = map.myLocation
         if (myLocation != null) {
             //val latLng = LatLng(currentLocation.latitude, currentLocation.longitude)
-            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLocation!!, 10f)
+            val cameraUpdate = CameraUpdateFactory.newLatLngZoom(myLocation!!, 13f)
             map.animateCamera(cameraUpdate)
         }
-
-
         // Return false so that we don't consume the event and the default behavior still occurs
         // (the camera animates to the user's current position).
         return false
