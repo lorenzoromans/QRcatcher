@@ -119,9 +119,10 @@ class NotificationsFragment : Fragment() {
 
                     for (partita in lista){
                         var valori=partita.split(',')
-                        gameIds.add(valori[1])
-                        nameObject.add(valori[2])
-                        description.add(valori[3])
+
+                        gameIds.add(valori[1].slice(2 until valori[1].length-1))
+                        nameObject.add(valori[2].slice(2 until valori[2].length-1))
+                        description.add(valori[3].slice(2 until valori[3].length-1))
                         qrImages.add("https://cdn.pixabay.com/photo/2016/03/31/14/37/check-mark-1292787__340.png")
 
                     }
@@ -134,17 +135,7 @@ class NotificationsFragment : Fragment() {
                             binding.recyclerView.adapter = adapter
                         }catch(e: Exception){    }
 
-
-                    /**
-                    val scroll = activity?.findViewById<ScrollView>(R.id.scrollView)
-                    //var animator = ObjectAnimator.ofInt(scroll, "scrollY", scroll.getScrollY(), targetPosition)
-                    val objectAnimator = ObjectAnimator.ofInt(scroll, "scrollX", 0, 250).setDuration(
-                        500
-                    )
-                    objectAnimator.start()
-                    */
-
-                    }
+                }
 
 
             },
@@ -153,9 +144,7 @@ class NotificationsFragment : Fragment() {
                 Log.d("error",error.toString())
             })
 
-
         queue.add(stringRequest)
-
 
     }
 

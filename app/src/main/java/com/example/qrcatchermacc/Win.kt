@@ -74,7 +74,7 @@ class Win : AppCompatActivity() {
                         }
                     }
 
-                var url= "https://bbooss97.pythonanywhere.com/store?data=$username,$gameId,$name,$description"
+                var url= "https://bbooss97.pythonanywhere.com/store?data="+username+"ttt"+gameId+"ttt"+name+"ttt"+description
                 Log.d("zzzzzzzzzzz",url)
                 val queue = Volley.newRequestQueue(this@Win)
 
@@ -86,7 +86,7 @@ class Win : AppCompatActivity() {
                     },
                     {error ->
                         // Handle error
-                        Log.d("error",error.toString())
+                        Log.d("babnana",error.toString())
                     })
 
                 queue.add(stringRequest)
