@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.transition.Transition
 import com.bumptech.glide.request.target.CustomTarget
 import com.example.qrcatchermacc.Player
@@ -157,9 +159,11 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
                     }
 
                     try {
+                        val requestOptions = RequestOptions.bitmapTransform(CircleCrop())
                         Glide.with(requireContext())
                             .asBitmap()
                             .load(player.imageUrl)
+                            .apply(requestOptions)
                             .into(object : CustomTarget<Bitmap>() {
                                 override fun onResourceReady(
                                     resource: Bitmap,
