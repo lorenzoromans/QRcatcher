@@ -223,11 +223,6 @@ class Catch : AppCompatActivity() {
             // Convert the QR code image to a String
             val qrCodeString = decodeQRCodeImage(image)
 
-            // Do something with the QR code String (e.g. display it on a TextView)
-            //textView.text = qrCodeString
-            //Log.d("PPPPPPPPPPPP",qrCodeString)
-            //Toast.makeText(this, qrCodeString, Toast.LENGTH_SHORT).show()
-
             if (flag.contentEquals(qrCodeString)){
                 val winRef = database.getReference("games").child(gameId!!).child("win")
                 winRef.setValue(true)
@@ -261,7 +256,7 @@ class Catch : AppCompatActivity() {
         if( qrCodeString.size() !=0){
             qrCode = qrCodeString.valueAt(0).rawValue
         }
-//        qrCode = qrCodeString.valueAt(0)
+
 
         // Return the QR code String
         return qrCode

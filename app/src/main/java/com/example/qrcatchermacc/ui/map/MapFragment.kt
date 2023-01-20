@@ -28,7 +28,6 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-import com.google.api.ResourceProto.resource
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -80,7 +79,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
         playersRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                //Log.d("aaaaaaaa", "CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                 players = dataSnapshot.children.map { it.getValue(Player::class.java) }
 
             }

@@ -55,9 +55,6 @@ class RecyclerAdapter(
             itemImage = itemView.findViewById(R.id.item_image)
             itemTitle = itemView.findViewById(R.id.item_title)
             itemDetail = itemView.findViewById(R.id.item_detail)
-            
-
-
             itemView.setOnClickListener{
                 val position: Int = adapterPosition
                 Toast.makeText(itemView.context, "you clicked ${names[position]}", Toast.LENGTH_LONG).show()

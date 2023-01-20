@@ -12,7 +12,6 @@ import android.hardware.SensorEventListener
 import android.hardware.SensorManager
 import android.location.Location
 import android.location.LocationManager
-import android.os.Build.VERSION_CODES.S
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
@@ -22,20 +21,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import com.example.qrcatchermacc.Catch
 import com.example.qrcatchermacc.Game
-import com.example.qrcatchermacc.SavedPreference
 import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.FragmentCompassBinding
-import com.google.android.gms.flags.FlagSource.G
 import com.google.android.gms.location.*
 import com.google.firebase.database.*
 import java.util.*
@@ -50,7 +43,6 @@ class CompassFragment : Fragment(), SensorEventListener {
     private val binding get() = _binding!!
 
     //-------------------------------
-    var compassImg: ImageView? = null
     var mAzimuth = 0
     private var mSensorManager: SensorManager? = null
     private var mRotationV: Sensor? = null
@@ -76,10 +68,7 @@ class CompassFragment : Fragment(), SensorEventListener {
     var longitude: Double = 0.0
     var previousLatitude: Double = 0.0
     var previousLongitude: Double = 0.0
-
-
-    private lateinit var locationManager: LocationManager
-    private lateinit var locationListener: LocationListener
+    
 
     private var catchEnded: Boolean = false
     lateinit var username: String
@@ -133,20 +122,11 @@ class CompassFragment : Fragment(), SensorEventListener {
 
         playerRef = gameRef.child("players").child(username)
 
-
-        val compassViewModel =
-            ViewModelProvider(this).get(CompassViewModel::class.java)
-
         _binding = FragmentCompassBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
         binding.scannerImage.setOnClickListener{
             (activity as Catch).calledScanQRCode()
-        }
-
-        val textView: TextView = binding.textCompass
-        compassViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
         }
 
         mSensorManager = requireActivity().getSystemService(Context.SENSOR_SERVICE) as SensorManager
@@ -311,7 +291,7 @@ class CompassFragment : Fragment(), SensorEventListener {
     }
     fun setTextViewDistance(){
         distanza=distance(latitude,longitude,targetLatitude,targetLongitude)
-        binding.textCompass.text = distanza.toString()
+        //binding.textCompass.text = distanza.toString()
 
         Log.d("compassvisibility",binding.imageViewCompass.visibility.toString())
         Log.d("qrvisibility",binding.scannerImage.visibility.toString())
@@ -417,26 +397,12 @@ class CompassFragment : Fragment(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
-        /*
-        Log.d("pause","pause")
-        SavedPreference.setLatitude(requireContext(), latitude.toString())
-        SavedPreference.setLatitude(requireContext(), longitude.toString())
-        */
     }
 
 
     override fun onResume() {
         super.onResume()
         start()
-        /*
-        Log.d("resume","resume")
-        latitude= SavedPreference.getLatitude(requireContext())!!.toDouble()
-        longitude= SavedPreference.getLongitude(requireContext())!!.toDouble()
-        setTextViewDistance()
-        */
-        // if (binding.imageViewCompass.visibility == View.GONE || binding.scannerImage.visibility == View.GONE) {
-        //    binding.progressBar2.setVisibility(View.VISIBLE)
-        //}
     }
 
     override fun onDestroyView(){

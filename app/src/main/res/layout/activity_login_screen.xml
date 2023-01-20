@@ -47,7 +47,7 @@
                 android:textAlignment="center"
                 android:textColor="#1E1E1E"
                 android:textSize="40sp" />
-            <!--android:text="Google Login" -->
+
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/Signin"

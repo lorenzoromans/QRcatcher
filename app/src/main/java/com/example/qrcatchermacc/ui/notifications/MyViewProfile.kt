@@ -1,4 +1,4 @@
-package com.example.qrcatchermacc.ui.home
+package com.example.qrcatchermacc.ui.notifications
 
 import android.content.Context
 import android.graphics.*
@@ -8,7 +8,7 @@ import android.view.View
 import java.lang.Integer.min
 
 
-class MyViewHome(context: Context) : View(context) {
+class MyViewProfile(context: Context) : View(context) {
 
 
     constructor(context: Context, attrs: AttributeSet) : this(context) {}
@@ -42,7 +42,7 @@ class MyViewHome(context: Context) : View(context) {
         path.moveTo(topLeft.x, topLeft.y)
         path.lineTo(topRight.x, topRight.y)
         path.lineTo(bottomRight.x, bottomRight.y)
-        path.lineTo(bottomLeft.x, bottomLeft.y/2)
+        path.lineTo(bottomLeft.x, bottomLeft.y)
         path.lineTo(topLeft.x, topLeft.y)
 
         canvas?.drawPath(path, paint)
