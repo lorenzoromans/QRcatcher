@@ -24,7 +24,9 @@ import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import com.example.qrcatchermacc.Catch
 import com.example.qrcatchermacc.Game
 import com.example.qrcatchermacc.SavedPreference.getUsername
@@ -79,6 +81,8 @@ class CompassFragment : Fragment(), SensorEventListener {
     private var locationRequest: LocationRequest? = null
 
     private var distanza: Double =0.0
+    private var setted: Boolean = false
+    private var inCompass: Boolean = true
 
     @SuppressLint("MissingPermission")
     override fun onCreateView(
@@ -146,13 +150,21 @@ class CompassFragment : Fragment(), SensorEventListener {
                     "Callback",
                     "SONO NEL CALLBACK------------------------------------------------------------------------------------"
                 )
+
+                try{
+                    val iconUrl = (activity as Catch).iconUrl
+                    if (iconUrl != null && !setted && inCompass){
+                        Glide.with(requireContext()).load(iconUrl).into(binding.weatherImage)
+                        setted = true
+                    }
+                }catch(e : Exception){ /* no need to manage the exception */}
+
+
+
                 val location: Location? = p0?.lastLocation
                 if (location != null) {
                     latitude = location.latitude
                     longitude = location.longitude
-
-                    Log.d("Callback LATTTTTTTTTTT", latitude.toString())
-                    Log.d("Callback LONGGGGGGGGGG", longitude.toString())
 
                     //update the location
                     val update = mapOf("latitude" to latitude, "longitude" to longitude)
@@ -195,6 +207,7 @@ class CompassFragment : Fragment(), SensorEventListener {
     @SuppressLint("MissingPermission")
     override fun onStart() {
         super.onStart()
+        inCompass=true
         mFusedLocationClient.requestLocationUpdates(
             locationRequest!!,
             locationCallback!!,
@@ -203,8 +216,8 @@ class CompassFragment : Fragment(), SensorEventListener {
 
     }
 
-    override fun onSensorChanged(event: SensorEvent) {
 
+    override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
             SensorManager.getRotationMatrixFromVector(rMat, event.values)
             mAzimuth = (Math.toDegrees(
@@ -239,10 +252,7 @@ class CompassFragment : Fragment(), SensorEventListener {
             targetLatitude,
             targetLongitude
         ).toFloat()
-        Log.d("AAAAAAAAAA", angle.toString())
-        Log.d("DDDDDDDDDD", (-mAzimuth).toString())
-        Log.d("BBBBBBBBBB", latitude.toString())
-        Log.d("CCCCCCCCCC", longitude.toString())
+
         val ra = RotateAnimation(
             currentDegree,
             //(-mAzimuth.toFloat() + getBearing(latitude, longitude, targetLatitude, targetLongitude).toFloat()),
@@ -289,6 +299,7 @@ class CompassFragment : Fragment(), SensorEventListener {
         val c = 2 * atan2(sqrt(a), sqrt(1 - a))
         return R * c
     }
+
     fun setTextViewDistance(){
         distanza=distance(latitude,longitude,targetLatitude,targetLongitude)
         //binding.textCompass.text = distanza.toString()
@@ -397,16 +408,19 @@ class CompassFragment : Fragment(), SensorEventListener {
 
     override fun onPause() {
         super.onPause()
+        inCompass=false
     }
 
 
     override fun onResume() {
         super.onResume()
+        inCompass=true
         start()
     }
 
     override fun onDestroyView(){
         super.onDestroyView()
+        setted=false
 
     }
 
@@ -426,8 +440,6 @@ class CompassFragment : Fragment(), SensorEventListener {
     }
 
 
-    override fun onAccuracyChanged(p0: Sensor?, p1: Int) {
-        /** not implemented */
-    }
+    override fun onAccuracyChanged(p0: Sensor?, p1: Int) { /** not implemented */  }
 }
 

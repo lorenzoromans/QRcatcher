@@ -66,20 +66,53 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="334dp"
+        android:layout_width="165dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
-        android:alpha="0.8"
+        android:alpha="0.6"
         android:fontFamily="@font/baloo_bhaijaan"
         android:text="@string/note"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.493"
+        android:textSize="13sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#AAA7A7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/weatherText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/baloo_bhaijaan"
+            android:text="Weather at the location"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/weatherImage"
+            android:layout_width="72dp"
+            android:layout_height="68dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="8dp"
+            android:cropToPadding="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/weatherText"
+            app:layout_constraintStart_toStartOf="@+id/weatherText"
+            app:layout_constraintTop_toBottomOf="@+id/weatherText"
+            tools:srcCompat="@tools:sample/avatars" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

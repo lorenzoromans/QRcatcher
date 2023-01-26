@@ -13,6 +13,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -30,10 +31,12 @@ import com.example.qrcatchermacc.SavedPreference.getImage
 import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.ActivityCatchBinding
 import com.android.volley.Request
+import com.bumptech.glide.Glide
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
 import com.google.firebase.database.*
+import org.json.JSONObject
 
 
 class Catch : AppCompatActivity() {
@@ -46,6 +49,7 @@ class Catch : AppCompatActivity() {
     private lateinit var flag: String
     private lateinit var winListener : ValueEventListener
     private lateinit var winRef: DatabaseReference
+    var iconUrl : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,6 +79,26 @@ class Catch : AppCompatActivity() {
 
         database = FirebaseDatabase.getInstance()
 
+        var gameRef=database.getReference("games").child(gameId!!)
+
+        gameRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+                val game = dataSnapshot.getValue(Game::class.java)
+                if (game != null) {
+                    var targetLatitude = game.latitude!!
+                    var targetLongitude = game.longitude!!
+                    //async call to weatherapi
+                    weatherCall(targetLatitude,targetLongitude)
+
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error
+            }
+        })
+
+
         val playersRef = database.getReference("games").child(gameId!!).child("players")
 
 
@@ -83,6 +107,7 @@ class Catch : AppCompatActivity() {
         playersRef.updateChildren(update)
 
         var flagRef=database.getReference("games").child(gameId!!).child("flag")
+
         winRef=database.getReference("games").child(gameId!!).child("win")
 
         winListener=object : ValueEventListener {
@@ -284,5 +309,32 @@ class Catch : AppCompatActivity() {
         queue.add(stringRequest)
 
     }
-    
+    fun weatherCall(latitude: Double?,longitude:Double?){
+        Log.d("weatherasasasasasa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        val queue = Volley.newRequestQueue(this)
+        val API_KEY="e007861412303123ec33263be342a8fe"
+        //https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily,minutely,alerts&appid={API key}
+        val url = "https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$API_KEY"
+        val stringRequest = StringRequest(
+            Request.Method.GET, url,
+            { response ->
+
+                val jsonObject = JSONObject(response)
+                val iconCode = jsonObject.getJSONArray("weather").getJSONObject(0).getString("icon")
+                iconUrl = "https://openweathermap.org/img/wn/$iconCode@2x.png"
+
+                //val imageView = findViewById<ImageView>(R.id.weatherImage)
+                //Glide.with(this).load(iconUrl).into(imageView)
+            },
+            {
+                // Handle error
+                Log.d("weather","erroreeeeeeeeeeeeeee")
+            })
+        queue.add(stringRequest)
+
+    }
+
+    companion object aa{
+        var iconUrl2 : String = ""
+    }
 }

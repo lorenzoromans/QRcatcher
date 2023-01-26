@@ -4,10 +4,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.*
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.android.volley.Request
@@ -54,9 +52,6 @@ class NotificationsFragment : Fragment() {
         _binding = FragmentNotificationsBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-
-
-
         setHasOptionsMenu(true)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -80,21 +75,17 @@ class NotificationsFragment : Fragment() {
 
         layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.layoutManager = layoutManager
-        getWinnedGames()
+
+        getWinnedGames(0)
 
         return root
     }
+    
 
 
-    //LAST ADDED--------------------------------------------------------------------
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        activity?.findViewById<TextView>(R.id.item_title)?.isSelected  = true
-        activity?.findViewById<TextView>(R.id.item_title)?.setSingleLine()
-    }
+    fun getWinnedGames(rec: Int){
+        if (rec>=5){ return  }
 
-
-    fun getWinnedGames(){
         val username = SavedPreference.getUsername(requireContext())
 
         var url= "https://bbooss97.pythonanywhere.com/retrieve?data=$username"
@@ -130,10 +121,9 @@ class NotificationsFragment : Fragment() {
 
                 }
 
-
             },
             {error ->
-                // Handle error
+                getWinnedGames(rec+1)
                 Log.d("error",error.toString())
             })
 
@@ -148,7 +138,6 @@ class NotificationsFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.logout -> {
-            // do stuff
             mGoogleSignInClient.signOut().addOnCompleteListener {
                 val intent= Intent(requireActivity(), LoginScreen::class.java)
                 Toast.makeText(requireActivity(),"Logging Out", Toast.LENGTH_SHORT).show()
