@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -83,7 +84,7 @@ class NotificationsFragment : Fragment() {
     
 
 
-    fun getWinnedGames(rec: Int){
+    fun getWinnedGames(rec:Int){
         if (rec>=5){ return  }
 
         val username = SavedPreference.getUsername(requireContext())
@@ -126,7 +127,7 @@ class NotificationsFragment : Fragment() {
                 getWinnedGames(rec+1)
                 Log.d("error",error.toString())
             })
-
+        //stringRequest.retryPolicy = DefaultRetryPolicy(10, 5, 2F)
         queue.add(stringRequest)
 
     }

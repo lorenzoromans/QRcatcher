@@ -24,6 +24,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.android.volley.DefaultRetryPolicy
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.qrcatchermacc.SavedPreference.getEmail
@@ -293,6 +294,14 @@ class Catch : AppCompatActivity() {
         val myPlayerRef =  FirebaseDatabase.getInstance().getReference("games").child(gameId!!).child("players").child(getUsername(this)!!)
         myPlayerRef.removeValue()
 
+        deletePlayers(0)
+
+    }
+
+    fun deletePlayers(r:Int){
+        if (r>=5){
+            return
+        }
         var url="https://bbooss97.pythonanywhere.com/deletePlayers?id="+gameId!!
         val queue = Volley.newRequestQueue(this)
 
@@ -304,11 +313,13 @@ class Catch : AppCompatActivity() {
             {error ->
                 // Handle error
                 Log.d("error",error.toString())
+                deletePlayers(r+1)
             })
 
+        //stringRequest.retryPolicy = DefaultRetryPolicy(10, 5, 2F)
         queue.add(stringRequest)
-
     }
+
     fun weatherCall(latitude: Double?,longitude:Double?){
         Log.d("weatherasasasasasa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         val queue = Volley.newRequestQueue(this)
