@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 
 
 class ChatFragment : Fragment() {
@@ -35,11 +37,12 @@ class ChatFragment : Fragment() {
     private lateinit var adapter: MessageAdapter
     private lateinit var manager: LinearLayoutManager
     private lateinit var db: FirebaseDatabase
-    /**
+    private lateinit var messagesListReference : DatabaseReference
+
     private val openDocument = registerForActivityResult(MyOpenDocumentContract()) { uri ->
         uri?.let { onImageSelected(it) }
     }
-    */
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -64,7 +67,7 @@ class ChatFragment : Fragment() {
         //get the reference to the actual message child
         val gameId = requireActivity().getIntent()!!.getExtras()!!.getString("GameId")
         val messagesRef = db.getReference("games").child(gameId!!).child("messages")
-
+        messagesListReference = messagesRef
         val options = FirebaseRecyclerOptions.Builder<Message>()
             .setQuery(messagesRef, Message::class.java)
             .build()
@@ -74,7 +77,7 @@ class ChatFragment : Fragment() {
         manager.stackFromEnd = true
         binding.messageRecyclerView.layoutManager = manager
         binding.messageRecyclerView.adapter = adapter
-
+        binding.messageRecyclerView.itemAnimator = null
         // Scroll down when a new message arrives
         // See MyScrollToBottomObserver for details
         adapter.registerAdapterDataObserver(
@@ -98,11 +101,9 @@ class ChatFragment : Fragment() {
         }
 
         // When the image button is clicked, launch the image picker
-
-        //binding.addMessageImageView.setOnClickListener {
-        //    openDocument.launch(arrayOf("image/*"))
-        //}
-
+        binding.addMessageImageView.setOnClickListener {
+           openDocument.launch(arrayOf("image/*"))
+        }
 
         return root
     }
@@ -123,13 +124,12 @@ class ChatFragment : Fragment() {
         _binding = null
     }
 
-    /**
+
     private fun onImageSelected(uri: Uri) {
         Log.d(TAG, "Uri: $uri")
-        val user = auth.currentUser
+        //val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
-        db.reference
-            .child(MESSAGES_CHILD)
+        messagesListReference
             .push()
             .setValue(
                 tempMessage,
@@ -145,7 +145,7 @@ class ChatFragment : Fragment() {
                     // Build a StorageReference and then upload the file
                     val key = databaseReference.key
                     val storageReference = Firebase.storage
-                        .getReference(user!!.uid)
+                        .getReference(getUserName()!!)
                         .child(key!!)
                         .child(uri.lastPathSegment!!)
                     putImageInStorage(storageReference, uri, key)
@@ -156,20 +156,18 @@ class ChatFragment : Fragment() {
         // First upload the image to Cloud Storage
         storageReference.putFile(uri)
             .addOnSuccessListener(
-                this
+                requireActivity()
             ) { taskSnapshot -> // After the image loads, get a public downloadUrl for the image
                 // and add it to the message.
                 taskSnapshot.metadata!!.reference!!.downloadUrl
                     .addOnSuccessListener { uri ->
-                        val friendlyMessage =
-                            Message(null, getUserName(), getPhotoUrl(), uri.toString())
-                        db.reference
-                            .child(MESSAGES_CHILD)
+                        val friendlyMessage = Message(null, getUserName(), getPhotoUrl(), uri.toString())
+                        messagesListReference
                             .child(key!!)
                             .setValue(friendlyMessage)
                     }
             }
-            .addOnFailureListener(this) { e ->
+            .addOnFailureListener(requireActivity()) { e ->
                 Log.w(
                     TAG,
                     "Image upload task was unsuccessful.",
@@ -177,7 +175,7 @@ class ChatFragment : Fragment() {
                 )
             }
     }
-    */
+
 
     private fun getPhotoUrl(): String? {
         return SavedPreference.getImage(requireContext())

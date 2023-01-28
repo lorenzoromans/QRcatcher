@@ -4,8 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.chat.ChatFragment"
-    android:background="@color/colorDarkGray">
+    android:alpha="0.8"
+    android:background="@drawable/chat_background"
+    tools:context=".ui.chat.ChatFragment">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -15,6 +16,13 @@
         android:background="@color/colorLightGray"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp">
+
+        <ImageView
+            android:id="@+id/addMessageImageView"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            ads:srcCompat="@drawable/outline_add_photo_alternate_24" />
 
         <EditText
             android:id="@+id/messageEditText"

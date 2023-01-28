@@ -17,6 +17,7 @@ import com.example.qrcatchermacc.ui.chat.ChatFragment.Companion.ANONYMOUS
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 
 class MessageAdapter (
     private val options: FirebaseRecyclerOptions<Message>,
@@ -51,23 +52,25 @@ class MessageAdapter (
         fun bind(item: Message) {
             binding.messageTextView.text = item.text
             setTextColor(item.name, binding.messageTextView)
+            setUsernameTextColor(item.name, binding.messengerTextView)
 
             binding.messengerTextView.text = item.name ?: ANONYMOUS
-            /**
+
             if (item.photoUrl != null) {
                 loadImageIntoView(binding.messengerImageView, item.photoUrl)
             } else {
                 binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
             }
-            */
+
             //following line added
             //binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
-
+            /**
             if (item.photoUrl != null) {
                 loadProfileImage(binding.messengerImageView, item.photoUrl)
             } else {
                 binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
             }
+            */
         }
 
         private fun setTextColor(userName: String?, textView: TextView) {
@@ -79,12 +82,20 @@ class MessageAdapter (
                 textView.setTextColor(Color.BLACK)
             }
         }
+
+        private fun setUsernameTextColor(userName: String?, textView: TextView) {
+            if (userName != ANONYMOUS && currentUserName == userName && userName != null) {
+                textView.setTextColor(Color.CYAN)
+            } else {
+                textView.setTextColor(Color.WHITE)
+            }
+        }
     }
 
     inner class ImageMessageViewHolder(private val binding: ImageMessageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
-            /**
+
             loadImageIntoView(binding.messageImageView, item.imageUrl!!)
 
             binding.messengerTextView.text = item.name ?: ANONYMOUS
@@ -93,16 +104,19 @@ class MessageAdapter (
             } else {
                 binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
             }
-             */
+
         }
 
     }
 
+    //added function to load the image
+    /**
     private fun loadProfileImage(view: ImageView, url: String){
         Glide.with(view.context).load(url).into(view)
     }
+    */
 
-    /**
+
     private fun loadImageIntoView(view: ImageView, url: String) {
         if (url.startsWith("gs://")) {
             val storageReference = Firebase.storage.getReferenceFromUrl(url)
@@ -124,7 +138,7 @@ class MessageAdapter (
             Glide.with(view.context).load(url).into(view)
         }
     }
-    */
+
     companion object {
         const val TAG = "MessageAdapter"
         const val VIEW_TYPE_TEXT = 1
