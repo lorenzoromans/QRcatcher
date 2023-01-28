@@ -77,7 +77,7 @@ class Win : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.w("aaaaaaaaaaaaaaaa", "Failed to read value.", error.toException())
+
             }
         })
 
@@ -94,11 +94,11 @@ class Win : AppCompatActivity() {
                 Request.Method.GET, url,
                 { response ->
                     // Do something with the response
-                    Log.d("ZZZZZZZZZZZZZZZZZZZ",response.toString())
+
                 },
                 {error ->
                     // Handle error
-                    Log.d("babnana",error.toString())
+
                     callWinGame(rec+1,username, gameId, name, description)
                 })
             //stringRequest.retryPolicy = DefaultRetryPolicy(10, 5, 2F)

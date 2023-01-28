@@ -24,7 +24,6 @@ import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.qrcatchermacc.Catch
@@ -107,11 +106,6 @@ class CompassFragment : Fragment(), SensorEventListener {
                 if (game != null) {
                     targetLatitude = game.latitude!!
                     targetLongitude = game.longitude!!
-                    Log.d("valoriiii", game.latitude!!.toString() + game.longitude!!.toString())
-                    Log.d(
-                        "valoriiiiiiiiiiiii",
-                        targetLatitude.toString() + targetLongitude.toString()
-                    )
                     // Do something with the latitude and longitude
                 } else {
                     // The game document was not found
@@ -141,15 +135,11 @@ class CompassFragment : Fragment(), SensorEventListener {
         locationRequest!!.priority = LocationRequest.PRIORITY_HIGH_ACCURACY
 
         locationRequest!!.setInterval(2 * 1000) // 2 seconds
-        locationRequest!!.setFastestInterval(2 * 1000) // 1 seconds
+        locationRequest!!.setFastestInterval(2 * 1000) // 2 seconds
 
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(p0: LocationResult) {
                 // Update the latitude and longitude when the location changes
-                Log.d(
-                    "Callback",
-                    "SONO NEL CALLBACK------------------------------------------------------------------------------------"
-                )
 
                 try{
                     val iconUrl = (activity as Catch).iconUrl
@@ -172,7 +162,6 @@ class CompassFragment : Fragment(), SensorEventListener {
                         playerRef.updateChildren(update)
                     }
 
-
                     //set previous lat and long
                     previousLatitude = latitude
                     previousLongitude = longitude
@@ -185,7 +174,6 @@ class CompassFragment : Fragment(), SensorEventListener {
                 }
             }
         }
-
 
         //Initialize the listeners
         start()
@@ -255,7 +243,6 @@ class CompassFragment : Fragment(), SensorEventListener {
 
         val ra = RotateAnimation(
             currentDegree,
-            //(-mAzimuth.toFloat() + getBearing(latitude, longitude, targetLatitude, targetLongitude).toFloat()),
             angle,
             Animation.RELATIVE_TO_SELF, 0.5f,
             Animation.RELATIVE_TO_SELF,
@@ -274,8 +261,6 @@ class CompassFragment : Fragment(), SensorEventListener {
             binding.imageViewCompass.startAnimation(ra)
         }
 
-        //compassImg!!.startAnimation(ra)
-        //currentDegree = -mAzimuth.toFloat()
         currentDegree = angle
     }
 
@@ -302,10 +287,6 @@ class CompassFragment : Fragment(), SensorEventListener {
 
     fun setTextViewDistance(){
         distanza=distance(latitude,longitude,targetLatitude,targetLongitude)
-        //binding.textCompass.text = distanza.toString()
-
-        Log.d("compassvisibility",binding.imageViewCompass.visibility.toString())
-        Log.d("qrvisibility",binding.scannerImage.visibility.toString())
 
         if(distanza < 10.00){
             Log.d("minore",distanza.toString())
@@ -313,7 +294,7 @@ class CompassFragment : Fragment(), SensorEventListener {
             binding.scannerImage.setVisibility(View.VISIBLE)
             binding.progressBar.setVisibility(View.GONE)
         }else{
-            Log.d("maggiore",distanza.toString())
+
             binding.imageViewCompass.setVisibility(View.VISIBLE)
             binding.scannerImage.setVisibility(View.GONE)
             binding.progressBar.setVisibility(View.GONE)
@@ -435,7 +416,7 @@ class CompassFragment : Fragment(), SensorEventListener {
             }
         }
 
-        //locationManager.removeUpdates(locationListener)
+
         mFusedLocationClient.removeLocationUpdates(locationCallback!!)
     }
 

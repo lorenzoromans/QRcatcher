@@ -1,13 +1,11 @@
 package com.example.qrcatchermacc.ui.chat
 
 import android.net.Uri
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.qrcatchermacc.SavedPreference
@@ -23,14 +21,8 @@ import com.google.firebase.storage.ktx.storage
 
 
 class ChatFragment : Fragment() {
-    /**
-    companion object {
-        fun newInstance() = ChatFragment()
-    }
-    */
 
 
-   // private lateinit var viewModel: ChatViewModel
     private var _binding: FragmentChatBinding? = null
     private val binding get() = _binding!!
 
@@ -48,16 +40,11 @@ class ChatFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        val homeViewModel =
-            ViewModelProvider(this).get(ChatViewModel::class.java)
+
 
         _binding = FragmentChatBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        //val textView: TextView = binding.textChat
-        //homeViewModel.text.observe(viewLifecycleOwner) {
-        //    textView.text = it
-        //}
+        
 
         db = Firebase.database
 
@@ -79,7 +66,6 @@ class ChatFragment : Fragment() {
         binding.messageRecyclerView.adapter = adapter
         binding.messageRecyclerView.itemAnimator = null
         // Scroll down when a new message arrives
-        // See MyScrollToBottomObserver for details
         adapter.registerAdapterDataObserver(
             ChatScrollToBottomObserver(binding.messageRecyclerView, adapter, manager)
         )
@@ -127,7 +113,6 @@ class ChatFragment : Fragment() {
 
     private fun onImageSelected(uri: Uri) {
         Log.d(TAG, "Uri: $uri")
-        //val user = auth.currentUser
         val tempMessage = Message(null, getUserName(), getPhotoUrl(), LOADING_IMAGE_URL)
         messagesListReference
             .push()

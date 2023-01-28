@@ -3,7 +3,6 @@ package com.example.qrcatchermacc
 
 import android.Manifest
 import android.app.AlertDialog
-import android.app.ProgressDialog.show
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -13,18 +12,15 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import com.android.volley.DefaultRetryPolicy
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.qrcatchermacc.SavedPreference.getEmail
@@ -32,7 +28,6 @@ import com.example.qrcatchermacc.SavedPreference.getImage
 import com.example.qrcatchermacc.SavedPreference.getUsername
 import com.example.qrcatchermacc.databinding.ActivityCatchBinding
 import com.android.volley.Request
-import com.bumptech.glide.Glide
 import com.google.android.gms.vision.Frame
 import com.google.android.gms.vision.barcode.Barcode
 import com.google.android.gms.vision.barcode.BarcodeDetector
@@ -72,7 +67,7 @@ class Catch : AppCompatActivity() {
         navView.setupWithNavController(navController)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         gameId = intent.getStringExtra("GameId")
-        Log.d("inside catch id",gameId!!)
+    
 
         val username= getUsername(this)!!
         val email = getEmail(this)!!
@@ -308,11 +303,11 @@ class Catch : AppCompatActivity() {
         val stringRequest = StringRequest(Request.Method.GET, url,
             { response ->
                 // Do something with the response
-                Log.d("ZZZZZZZZZZZZZZZZZZZ",response.toString())
+                
             },
             {error ->
                 // Handle error
-                Log.d("error",error.toString())
+               
                 deletePlayers(r+1)
             })
 
@@ -321,7 +316,7 @@ class Catch : AppCompatActivity() {
     }
 
     fun weatherCall(latitude: Double?,longitude:Double?){
-        Log.d("weatherasasasasasa","aaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+        
         val queue = Volley.newRequestQueue(this)
         val API_KEY="e007861412303123ec33263be342a8fe"
         //https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily,minutely,alerts&appid={API key}
@@ -339,13 +334,10 @@ class Catch : AppCompatActivity() {
             },
             {
                 // Handle error
-                Log.d("weather","erroreeeeeeeeeeeeeee")
+                
             })
         queue.add(stringRequest)
 
     }
 
-    companion object aa{
-        var iconUrl2 : String = ""
-    }
 }

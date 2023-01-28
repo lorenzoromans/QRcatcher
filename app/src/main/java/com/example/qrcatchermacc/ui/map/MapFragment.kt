@@ -139,10 +139,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         val username = getUsername(requireContext())!!
         job = MainScope().launch {
             while (true) {
-                Log.d(
-                    "TTTTTTTTTTTTTTTTTTTTTT",
-                    "inside the coroutine---------------------------------------"
-                )
+                
 
                 //NEL THREAD----
                 for (mLocationMarker in allMarkers) {

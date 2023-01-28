@@ -97,7 +97,7 @@ class NotificationsFragment : Fragment() {
             Request.Method.GET, url,
             { response ->
                 // Do something with the response
-                Log.d("ZZZZZZZZZZZZZZZZZZZ",response.toString())
+                
                 if (response.length!=2){
                     var newResp = response.slice(2 until response.length-2)
                     var lista = newResp.split("), (")
@@ -111,9 +111,7 @@ class NotificationsFragment : Fragment() {
                         qrImages.add("https://cdn.pixabay.com/photo/2016/03/31/14/37/check-mark-1292787__340.png")
 
                     }
-                    Log.d("vvv",gameIds.toString())
-                    Log.d("vvv",nameObject.toString())
-                    Log.d("vvv",description.toString())
+                    
 
                     try {
                             adapter = ProfileRecyclerAdapter(gameIds, nameObject, description, qrImages)
@@ -125,7 +123,7 @@ class NotificationsFragment : Fragment() {
             },
             {error ->
                 getWinnedGames(rec+1)
-                Log.d("error",error.toString())
+               
             })
         //stringRequest.retryPolicy = DefaultRetryPolicy(10, 5, 2F)
         queue.add(stringRequest)

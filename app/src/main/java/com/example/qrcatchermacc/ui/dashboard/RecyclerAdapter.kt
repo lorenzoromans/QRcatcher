@@ -37,7 +37,7 @@ class RecyclerAdapter(
     override fun onBindViewHolder(holder: RecyclerAdapter.ViewHolder, position: Int) {
         holder.itemTitle.text = names[position]
         holder.itemDetail.text = descriptions[position]
-        //holder.itemImage.setImageResource(images[position])
+
         val imageUrl = qrImages[position]
         Glide.with(holder.itemView.context)
             .load(imageUrl)
@@ -59,7 +59,7 @@ class RecyclerAdapter(
                 val position: Int = adapterPosition
                 Toast.makeText(itemView.context, "you clicked ${names[position]}", Toast.LENGTH_LONG).show()
                 val intent = Intent(itemView.context, Catch::class.java)
-                Log.d("insiderecicler",ids[position]!!)
+
                 intent.putExtra("GameId",ids[position])
                 itemView.context.startActivity(intent)
             }

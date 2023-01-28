@@ -12,8 +12,6 @@ import com.example.qrcatchermacc.R
 import com.example.qrcatchermacc.databinding.ImageMessageBinding
 import com.example.qrcatchermacc.databinding.MessageBinding
 import com.example.qrcatchermacc.ui.chat.ChatFragment.Companion.ANONYMOUS
-//import com.example.qrcatchermacc.ui.chat.MessageAdapter.ImageMessageViewHolder.Companion.VIEW_TYPE_IMAGE
-//import com.example.qrcatchermacc.ui.chat.MessageAdapter.ImageMessageViewHolder.Companion.VIEW_TYPE_TEXT
 import com.firebase.ui.database.FirebaseRecyclerAdapter
 import com.firebase.ui.database.FirebaseRecyclerOptions
 import com.google.firebase.ktx.Firebase
@@ -61,16 +59,7 @@ class MessageAdapter (
             } else {
                 binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
             }
-
-            //following line added
-            //binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
-            /**
-            if (item.photoUrl != null) {
-                loadProfileImage(binding.messengerImageView, item.photoUrl)
-            } else {
-                binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
-            }
-            */
+            
         }
 
         private fun setTextColor(userName: String?, textView: TextView) {
@@ -108,14 +97,7 @@ class MessageAdapter (
         }
 
     }
-
-    //added function to load the image
-    /**
-    private fun loadProfileImage(view: ImageView, url: String){
-        Glide.with(view.context).load(url).into(view)
-    }
-    */
-
+    
 
     private fun loadImageIntoView(view: ImageView, url: String) {
         if (url.startsWith("gs://")) {
