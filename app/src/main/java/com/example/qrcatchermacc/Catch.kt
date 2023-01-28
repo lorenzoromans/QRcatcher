@@ -257,7 +257,7 @@ class Catch : AppCompatActivity() {
                 .show()
             }
             //return
-        }else{
+        }else if(requestCode == REQUEST_IMAGE_CAPTURE){
             Toast.makeText(this, "QRcode not detected correctly, try again", Toast.LENGTH_LONG)
             .show()
         }
