@@ -102,8 +102,10 @@
         android:layout_width="69dp"
         android:layout_height="59dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/baloo_bhaijaan"
         android:text="Lorenzo Romagnoli 1975517"
         android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/avatar2"
         app:layout_constraintStart_toStartOf="@+id/avatar2"
         app:layout_constraintTop_toBottomOf="@+id/avatar2" />
 
@@ -112,8 +114,10 @@
         android:layout_width="69dp"
         android:layout_height="59dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/baloo_bhaijaan"
         android:text="Andrea Morelli 1845525"
         android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/avatar1"
         app:layout_constraintStart_toStartOf="@+id/avatar1"
         app:layout_constraintTop_toBottomOf="@+id/avatar1" />
 

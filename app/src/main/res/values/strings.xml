@@ -24,6 +24,6 @@
     <string name="username">username</string>
     <string name="email_example_com">email@example.com</string>
     <string name="the_team">The team: </string>
-    <string name="note">Note: if your are close to the object the compass will we be replaced by our logo to start the camera to scan the QRcode</string>
+    <string name="note">Note: if your are close to the object the compass will be replaced by our logo to start the camera to scan the QRcode</string>
 
 </resources>

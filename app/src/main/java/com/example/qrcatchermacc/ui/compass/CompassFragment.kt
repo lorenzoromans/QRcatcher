@@ -144,6 +144,8 @@ class CompassFragment : Fragment(), SensorEventListener {
                 try{
                     val iconUrl = (activity as Catch).iconUrl
                     if (iconUrl != null && !setted && inCompass){
+                        binding.weatherFetching.setVisibility(View.GONE)
+                        binding.weatherImage.setVisibility(View.VISIBLE)
                         Glide.with(requireContext()).load(iconUrl).into(binding.weatherImage)
                         setted = true
                     }
@@ -289,12 +291,10 @@ class CompassFragment : Fragment(), SensorEventListener {
         distanza=distance(latitude,longitude,targetLatitude,targetLongitude)
 
         if(distanza < 10.00){
-            Log.d("minore",distanza.toString())
             binding.imageViewCompass.setVisibility(View.GONE)
             binding.scannerImage.setVisibility(View.VISIBLE)
             binding.progressBar.setVisibility(View.GONE)
         }else{
-
             binding.imageViewCompass.setVisibility(View.VISIBLE)
             binding.scannerImage.setVisibility(View.GONE)
             binding.progressBar.setVisibility(View.GONE)
@@ -415,8 +415,6 @@ class CompassFragment : Fragment(), SensorEventListener {
                 mSensorManager?.unregisterListener(this, sensor)
             }
         }
-
-
         mFusedLocationClient.removeLocationUpdates(locationCallback!!)
     }
 

@@ -83,9 +83,7 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
 
             }
 
-            override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
-            }
+            override fun onCancelled(error: DatabaseError) { /** not implemented */  }
         })
 
     }
@@ -139,8 +137,6 @@ class MapFragment : Fragment(), GoogleMap.OnMyLocationButtonClickListener,
         val username = getUsername(requireContext())!!
         job = MainScope().launch {
             while (true) {
-                
-
                 //NEL THREAD----
                 for (mLocationMarker in allMarkers) {
                     mLocationMarker.remove()

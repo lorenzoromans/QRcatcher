@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -328,7 +329,6 @@ class Catch : AppCompatActivity() {
                 val jsonObject = JSONObject(response)
                 val iconCode = jsonObject.getJSONArray("weather").getJSONObject(0).getString("icon")
                 iconUrl = "https://openweathermap.org/img/wn/$iconCode@2x.png"
-
                 //val imageView = findViewById<ImageView>(R.id.weatherImage)
                 //Glide.with(this).load(iconUrl).into(imageView)
             },

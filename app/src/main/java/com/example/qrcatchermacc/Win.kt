@@ -3,8 +3,6 @@ package com.example.qrcatchermacc
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import com.android.volley.DefaultRetryPolicy
 import com.android.volley.Request
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
@@ -54,8 +52,6 @@ class Win : AppCompatActivity() {
     }
 
     fun addWinnedGame(){
-
-
         var name : String? = ""
         var description : String? = ""
         val username = SavedPreference.getUsername(this)
@@ -87,18 +83,15 @@ class Win : AppCompatActivity() {
             if (rec>=5){return }
 
             var url= "https://bbooss97.pythonanywhere.com/store?data="+username+"ttt"+gameId+"ttt"+name+"ttt"+description
-            Log.d("zzzzzzzzzzz",url)
             val queue = Volley.newRequestQueue(this@Win)
 
             val stringRequest = StringRequest(
                 Request.Method.GET, url,
                 { response ->
                     // Do something with the response
-
                 },
                 {error ->
                     // Handle error
-
                     callWinGame(rec+1,username, gameId, name, description)
                 })
             //stringRequest.retryPolicy = DefaultRetryPolicy(10, 5, 2F)
