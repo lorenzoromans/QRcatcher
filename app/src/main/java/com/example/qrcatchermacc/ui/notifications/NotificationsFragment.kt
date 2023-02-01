@@ -97,7 +97,6 @@ class NotificationsFragment : Fragment() {
             Request.Method.GET, url,
             { response ->
                 // Do something with the response
-                
                 if (response.length!=2){
                     var newResp = response.slice(2 until response.length-2)
                     var lista = newResp.split("), (")

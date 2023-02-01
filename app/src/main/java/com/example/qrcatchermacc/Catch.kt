@@ -8,11 +8,9 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.provider.MediaStore
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -136,10 +134,13 @@ class Catch : AppCompatActivity() {
 
         })
     }
+
     fun closeCatch(){
         val builder = AlertDialog.Builder(this)
-        builder.setTitle("Confirm Action")
-        builder.setMessage("Are you sure you want to go back? Any unsaved changes will be lost.")
+        builder.setTitle("Confirm exit")
+        //builder.setMessage("Are you sure you want to go back? Any unsaved changes will be lost.")
+        builder.setMessage("Are you sure you want to exit the game?")
+
         builder.setPositiveButton("Yes") { dialog, which ->
             finish()
         }
@@ -317,10 +318,8 @@ class Catch : AppCompatActivity() {
     }
 
     fun weatherCall(latitude: Double?,longitude:Double?){
-        
         val queue = Volley.newRequestQueue(this)
         val API_KEY="e007861412303123ec33263be342a8fe"
-        //https://api.openweathermap.org/data/3.0/onecall?lat=33.44&lon=-94.04&exclude=hourly,daily,minutely,alerts&appid={API key}
         val url = "https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$API_KEY"
         val stringRequest = StringRequest(
             Request.Method.GET, url,
@@ -329,8 +328,7 @@ class Catch : AppCompatActivity() {
                 val jsonObject = JSONObject(response)
                 val iconCode = jsonObject.getJSONArray("weather").getJSONObject(0).getString("icon")
                 iconUrl = "https://openweathermap.org/img/wn/$iconCode@2x.png"
-                //val imageView = findViewById<ImageView>(R.id.weatherImage)
-                //Glide.with(this).load(iconUrl).into(imageView)
+
             },
             {
                 // Handle error

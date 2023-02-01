@@ -44,7 +44,8 @@ class CompassFragment : Fragment(), SensorEventListener {
     private val binding get() = _binding!!
 
     //-------------------------------
-    var mAzimuth = 0
+    var mAzimuth = 0f
+    private val a = 0.9f
     private var mSensorManager: SensorManager? = null
     private var mRotationV: Sensor? = null
     private var mAccelerometer: Sensor? = null
@@ -152,7 +153,6 @@ class CompassFragment : Fragment(), SensorEventListener {
                 }catch(e : Exception){ /* no need to manage the exception */}
 
 
-
                 val location: Location? = p0?.lastLocation
                 if (location != null) {
                     latitude = location.latitude
@@ -210,12 +210,12 @@ class CompassFragment : Fragment(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
             SensorManager.getRotationMatrixFromVector(rMat, event.values)
-            mAzimuth = (Math.toDegrees(
+            mAzimuth = a*mAzimuth+(1-a)*((Math.toDegrees(
                 SensorManager.getOrientation(
                     rMat,
                     orientation
                 )[0].toDouble()
-            ) + 360).toInt() % 360
+            ) + 360).toInt() % 360).toFloat()
         }
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.size)
@@ -227,16 +227,16 @@ class CompassFragment : Fragment(), SensorEventListener {
         if (mLastAccelerometerSet && mLastMagnetometerSet) {
             SensorManager.getRotationMatrix(rMat, null, mLastAccelerometer, mLastMagnetometer)
             SensorManager.getOrientation(rMat, orientation)
-            mAzimuth = (Math.toDegrees(
+            mAzimuth = a*mAzimuth+(1-a)*(Math.toDegrees(
                 SensorManager.getOrientation(
                     rMat,
                     orientation
                 )[0].toDouble()
             ) + 360).toInt() % 360
         }
-        mAzimuth = Math.round(mAzimuth.toFloat())
+        mAzimuth = Math.round(mAzimuth).toFloat()
 
-        val angle = -mAzimuth.toFloat() + getBearing(
+        val angle = -mAzimuth + getBearing(
             latitude,
             longitude,
             targetLatitude,
@@ -421,4 +421,3 @@ class CompassFragment : Fragment(), SensorEventListener {
 
     override fun onAccuracyChanged(p0: Sensor?, p1: Int) { /** not implemented */  }
 }
-

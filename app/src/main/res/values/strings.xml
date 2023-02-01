@@ -3,7 +3,7 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Games</string>
     <string name="title_notifications">Profile</string>
-    <string name="aboutDescription">QRcatcher is an app based on the idea of a treasure hunt, are just different the modalities. You are required to find the correct QRcode that is placed on some random objects in order to win the game. In this main page of the application you can find the dashboard containing all the available game inside the app at the moment, while on the profile page you can check your personal data and the list of all your completed games. QRcatcher is also a multi-user game, you can join matches with your friends and being able to check in every moment where they are thanks to the integrated map available, moreover you can even chat with your teammates with the built-in chat in order to be up-to-date during the game. Lastly a compass will guide you in order to reach the QRcode and be able to scan it using your camera to win a QRcatcher game.</string>
+    <string name="aboutDescription">QRcatcher is an app based on the idea of a treasure hunt, are just different the modalities. You are required to find the correct QRcode that is placed on some random objects in order to win the game. In this main page of the application you can find the dashboard containing all the available games inside the app at the moment, while on the profile page you can check your personal data and the list of all your completed games. QRcatcher is also a multi-user game, you can join matches with your friends and being able to check in every moment where they are thanks to the integrated map available, moreover you can even chat with your teammates with the built-in chat in order to be up-to-date during the game. Lastly a compass will guide you in order to reach the QRcode and be able to scan it using your camera to win a QRcatcher game.</string>
 
 
 
@@ -25,5 +25,7 @@
     <string name="email_example_com">email@example.com</string>
     <string name="the_team">The team: </string>
     <string name="note">Note: if your are close to the object the compass will be replaced by our logo to start the camera to scan the QRcode</string>
+    <string name="go_back_home">Go back home</string>
+    <string name="qrcatcher_winner">QRcatcher winner!!!</string>
 
 </resources>

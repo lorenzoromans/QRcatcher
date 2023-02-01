@@ -20,12 +20,11 @@
 
     <ImageView
         android:id="@+id/confetti"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="366dp"
+        android:layout_height="604dp"
         android:layout_alignParentBottom="true"
         android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:src="@drawable/confetti2" />
@@ -47,10 +46,11 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:text="Go back home"
+        android:text="@string/go_back_home"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/qrcatcherLogo" />
+        app:layout_constraintTop_toBottomOf="@+id/qrcatcherLogo"
+        tools:ignore="TextContrastCheck" />
 
     <TextView
         android:id="@+id/textView"
@@ -58,7 +58,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="50dp"
         android:fontFamily="@font/baloo_bhaijaan"
-        android:text="Qrcatcher winner!!!"
+        android:text="@string/qrcatcher_winner"
         android:textColor="@color/colorLightGray"
         android:textSize="40sp"
         android:textStyle="bold"
