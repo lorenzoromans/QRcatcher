@@ -31,8 +31,7 @@ class Win : AppCompatActivity() {
 
         Glide.with(this)
             .asGif()
-            //.load(R.drawable.confetti2)
-            .load("https://usagif.com/wp-content/uploads/gif/confetti-10.gif")
+            .load(R.drawable.confetti2)
             .into(binding.confetti)
 
     }
