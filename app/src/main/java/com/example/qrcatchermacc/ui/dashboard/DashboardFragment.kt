@@ -64,7 +64,6 @@ class DashboardFragment : Fragment() {
 
         gamesRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    Log.d("aaaaaaaa","CIAOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
                     val games = dataSnapshot.children.map { it.getValue(Game::class.java) }
                     for (game in games) {
                         ids.add(game?.id)

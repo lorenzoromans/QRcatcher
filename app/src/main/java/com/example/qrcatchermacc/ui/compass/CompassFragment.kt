@@ -15,6 +15,7 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.os.Looper
 import android.provider.Settings
+import android.service.autofill.Validators.not
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import android.view.animation.RotateAnimation
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
+import androidx.core.location.LocationManagerCompat.isLocationEnabled
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.example.qrcatchermacc.Catch
@@ -37,6 +39,7 @@ import kotlin.math.atan2
 import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.*
+import kotlin.text.Typography.degree
 
 
 class CompassFragment : Fragment(), SensorEventListener {
@@ -45,7 +48,7 @@ class CompassFragment : Fragment(), SensorEventListener {
 
     //-------------------------------
     var mAzimuth = 0f
-    private val a = 0.9f
+    private var a = 0.55f
     private var mSensorManager: SensorManager? = null
     private var mRotationV: Sensor? = null
     private var mAccelerometer: Sensor? = null
@@ -210,12 +213,19 @@ class CompassFragment : Fragment(), SensorEventListener {
     override fun onSensorChanged(event: SensorEvent) {
         if (event.sensor.type == Sensor.TYPE_ROTATION_VECTOR) {
             SensorManager.getRotationMatrixFromVector(rMat, event.values)
-            mAzimuth = a*mAzimuth+(1-a)*((Math.toDegrees(
+            var newMAzimuth = ((Math.toDegrees(
                 SensorManager.getOrientation(
                     rMat,
                     orientation
                 )[0].toDouble()
             ) + 360).toInt() % 360).toFloat()
+
+            if(Math.abs(newMAzimuth-mAzimuth)<180){
+                mAzimuth=a*mAzimuth + (1-a)*newMAzimuth
+            }else{
+                mAzimuth=newMAzimuth
+            }
+
         }
         if (event.sensor.type == Sensor.TYPE_ACCELEROMETER) {
             System.arraycopy(event.values, 0, mLastAccelerometer, 0, event.values.size)
@@ -227,13 +237,20 @@ class CompassFragment : Fragment(), SensorEventListener {
         if (mLastAccelerometerSet && mLastMagnetometerSet) {
             SensorManager.getRotationMatrix(rMat, null, mLastAccelerometer, mLastMagnetometer)
             SensorManager.getOrientation(rMat, orientation)
-            mAzimuth = a*mAzimuth+(1-a)*(Math.toDegrees(
+            var newMAzimuth = ((Math.toDegrees(
                 SensorManager.getOrientation(
                     rMat,
                     orientation
                 )[0].toDouble()
-            ) + 360).toInt() % 360
+            ) + 360).toInt() % 360).toFloat()
+
+            if(Math.abs(newMAzimuth-mAzimuth)<180){
+                mAzimuth=a*mAzimuth + (1-a)*newMAzimuth
+            }else{
+                mAzimuth=newMAzimuth
+            }
         }
+
         mAzimuth = Math.round(mAzimuth).toFloat()
 
         val angle = -mAzimuth + getBearing(
@@ -243,6 +260,7 @@ class CompassFragment : Fragment(), SensorEventListener {
             targetLongitude
         ).toFloat()
 
+        /*
         val ra = RotateAnimation(
             currentDegree,
             angle,
@@ -259,9 +277,11 @@ class CompassFragment : Fragment(), SensorEventListener {
         ra.fillAfter = false
 
         // Start the animation if visible
-        if (binding.imageViewCompass.visibility==View.VISIBLE){
-            binding.imageViewCompass.startAnimation(ra)
-        }
+        //if (binding.imageViewCompass.visibility==View.VISIBLE){
+        //    binding.imageViewCompass.startAnimation(ra)
+       // }
+       */
+        binding.imageViewCompass.rotation = angle
 
         currentDegree = angle
     }

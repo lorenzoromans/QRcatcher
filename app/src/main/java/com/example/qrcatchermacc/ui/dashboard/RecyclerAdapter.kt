@@ -57,7 +57,7 @@ class RecyclerAdapter(
             itemDetail = itemView.findViewById(R.id.item_detail)
             itemView.setOnClickListener{
                 val position: Int = adapterPosition
-                Toast.makeText(itemView.context, "you clicked ${names[position]}", Toast.LENGTH_LONG).show()
+                Toast.makeText(itemView.context, "you chose the game: ${names[position]}", Toast.LENGTH_LONG).show()
                 val intent = Intent(itemView.context, Catch::class.java)
 
                 intent.putExtra("GameId",ids[position])

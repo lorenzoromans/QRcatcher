@@ -74,7 +74,7 @@ class MessageAdapter (
 
         private fun setUsernameTextColor(userName: String?, textView: TextView) {
             if (userName != ANONYMOUS && currentUserName == userName && userName != null) {
-                textView.setTextColor(Color.CYAN)
+                textView.setTextColor(Color.WHITE)
             } else {
                 textView.setTextColor(Color.WHITE)
             }
@@ -84,6 +84,8 @@ class MessageAdapter (
     inner class ImageMessageViewHolder(private val binding: ImageMessageBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Message) {
+            setUsernameTextColor(item.name, binding.messengerTextView)
+
 
             loadImageIntoView(binding.messageImageView, item.imageUrl!!)
 
@@ -94,6 +96,14 @@ class MessageAdapter (
                 binding.messengerImageView.setImageResource(R.drawable.ic_baseline_person_pin_24)
             }
 
+        }
+        
+        private fun setUsernameTextColor(userName: String?, textView: TextView) {
+            if (userName != ANONYMOUS && currentUserName == userName && userName != null) {
+                textView.setTextColor(Color.WHITE)
+            } else {
+                textView.setTextColor(Color.WHITE)
+            }
         }
 
     }
