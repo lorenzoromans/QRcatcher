@@ -48,8 +48,6 @@ class ChatFragment : Fragment() {
 
         db = Firebase.database
 
-        //mettere reference a child messaggi INITIALLLLLLLLLLL
-        //val messagesRef = db.reference.child(MESSAGES_CHILD)
 
         //get the reference to the actual message child
         val gameId = requireActivity().getIntent()!!.getExtras()!!.getString("GameId")
@@ -175,7 +173,8 @@ class ChatFragment : Fragment() {
         private const val TAG = "ChatFragment"
         const val MESSAGES_CHILD = "messages"
         const val ANONYMOUS = "anonymous"
-        private const val LOADING_IMAGE_URL = "https://www.google.com/images/spin-32.gif"
+        private const val LOADING_IMAGE_URL2 = "https://www.google.com/images/spin-32.gif"
+        private const val LOADING_IMAGE_URL = "https://icon-library.com/images/loading-gif-icon/loading-gif-icon-1.jpg"
     }
 
 }
